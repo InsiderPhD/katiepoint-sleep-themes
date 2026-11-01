@@ -1,0 +1,5 @@
+{
+  "name": "Library card",
+  "description": "The book you're reading as a library checkout card: when you borrowed it, days out, sittings, and a date stamp.",
+  "order": 65
+}

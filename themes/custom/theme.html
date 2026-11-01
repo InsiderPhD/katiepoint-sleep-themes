@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html data-kp-orientation="portrait">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face { font-family: Inter; font-weight: 400; src: url(Inter-Regular.ttf); }
+  @font-face { font-family: Inter; font-weight: 700; src: url(Inter-Bold.ttf); }
+  html, body { margin: 0; height: 100%; }
+  body { background: #fff; color: #000; font-family: Inter, sans-serif; }
+  .mark { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; }
+  .mark div { font-size: 20px; font-weight: 700; letter-spacing: 8px; padding-left: 8px; }
+  .picture { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: contain; }
+</style>
+</head>
+<body>
+<div class="mark">
+    <svg viewBox="0 0 24 24" width="96" height="96" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 5h4"/><path d="M20 3v4"/><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+    <div>SLEEPING</div>
+  </div>
+  <img class="picture" data-var="sleep.image" data-filter="grey" src="sample-sleep.svg" alt="">
+</body>
+</html>

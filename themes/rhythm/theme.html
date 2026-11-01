@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html data-kp-orientation="landscape" data-kp-dither="threshold">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face { font-family: Inter; font-weight: 400; src: url(Inter-Regular.ttf); }
+  @font-face { font-family: Inter; font-weight: 700; src: url(Inter-Bold.ttf); }
+  html, body { margin: 0; height: 100%; }
+  body { background: #fff; color: #000; font-family: Inter, sans-serif; }
+  .page { box-sizing: border-box; height: 100%; padding: 40px 48px; display: flex; flex-direction: column; }
+  .kicker { font-size: 18px; font-weight: 700; letter-spacing: 6px; }
+  .head { margin-top: 10px; font-size: 44px; font-weight: 700; line-height: 52px; }
+  .sub { margin-top: 6px; font-size: 18px; line-height: 26px; }
+  .rows { margin-top: auto; display: flex; flex-direction: column; gap: 16px; }
+  .row { display: flex; align-items: center; gap: 16px; }
+  .name { width: 120px; font-size: 18px; font-weight: 700; }
+  .track { flex: 1; height: 26px; border: 3px solid #000; border-radius: 6px; padding: 3px; }
+  .bar { height: 100%; }
+  .pct { width: 64px; text-align: right; font-size: 18px; font-weight: 700; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="kicker">WHEN YOU READ</div>
+  <div class="head" data-template='You are {{stats.night_percent >= max(stats.evening_percent, max(stats.morning_percent, stats.afternoon_percent)) ? "a night owl" : stats.evening_percent >= max(stats.morning_percent, stats.afternoon_percent) ? "an evening reader" : stats.afternoon_percent >= stats.morning_percent ? "an afternoon reader" : "an early bird"}}'>You are an evening reader</div>
+  <div class="sub" data-template="{{stats.sessions}} sessions, {{stats.total_time}} in all, {{stats.avg_session_time}} a sitting">412 sessions, 61h 12m in all, 9m a sitting</div>
+  <div class="rows">
+    <div class="row">
+      <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v8"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m8 6 4-4 4 4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>
+      <div class="name">Morning</div>
+      <div class="track"><div class="bar" data-var="stats.morning_percent" data-kind="bar"></div></div>
+      <div class="pct" data-template="{{stats.morning_percent}}%">18%</div>
+    </div>
+    <div class="row">
+      <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+      <div class="name">Afternoon</div>
+      <div class="track"><div class="bar" data-var="stats.afternoon_percent" data-kind="bar"></div></div>
+      <div class="pct" data-template="{{stats.afternoon_percent}}%">22%</div>
+    </div>
+    <div class="row">
+      <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 10V2"/><path d="m4.93 10.93 1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="m19.07 10.93-1.41 1.41"/><path d="M22 22H2"/><path d="m16 6-4 4-4-4"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>
+      <div class="name">Evening</div>
+      <div class="track"><div class="bar" data-var="stats.evening_percent" data-kind="bar"></div></div>
+      <div class="pct" data-template="{{stats.evening_percent}}%">41%</div>
+    </div>
+    <div class="row">
+      <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      <div class="name">Night</div>
+      <div class="track"><div class="bar" data-var="stats.night_percent" data-kind="bar"></div></div>
+      <div class="pct" data-template="{{stats.night_percent}}%">19%</div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html data-kp-orientation="portrait" data-kp-dither="threshold">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face { font-family: Inter; font-weight: 400; src: url(Inter-Regular.ttf); }
+  @font-face { font-family: Inter; font-weight: 700; src: url(Inter-Bold.ttf); }
+  html, body { margin: 0; height: 100%; }
+  body { background: #fff; color: #000; font-family: Inter, sans-serif; }
+  .page { box-sizing: border-box; height: 100%; padding: 44px 36px 40px; display: flex; flex-direction: column; }
+  .kicker { font-size: 18px; font-weight: 700; letter-spacing: 6px; }
+  .score { display: flex; align-items: flex-end; gap: 14px; margin-top: 14px; }
+  .big { font-size: 150px; font-weight: 700; line-height: 1; letter-spacing: -5px; }
+  .of { padding-bottom: 18px; font-size: 18px; line-height: 24px; }
+  .verdict { margin-top: 12px; font-size: 36px; font-weight: 700; line-height: 44px; }
+  .rows { margin-top: auto; display: flex; flex-direction: column; gap: 18px; }
+  .row { display: flex; align-items: center; gap: 14px; }
+  .name { width: 118px; font-size: 18px; font-weight: 700; }
+  .track { flex: 1; height: 18px; border: 3px solid #000; border-radius: 12px; padding: 2px; }
+  .bar { height: 100%; border-radius: 8px; }
+  .val { width: 40px; text-align: right; font-size: 18px; font-weight: 700; }
+  .foot { margin-top: 26px; padding-top: 14px; border-top: 2px solid #000; font-size: 18px; line-height: 26px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="kicker">READER PROFILE</div>
+  <div class="score"><div class="big" data-var="stats.profile_score" data-glyphs="digits">78</div><div class="of">out of<br>100</div></div>
+  <div class="verdict" data-template='{{stats.profile_score >= 80 ? "Devoted reader" : stats.profile_score >= 60 ? "Steady reader" : stats.profile_score >= 40 ? "Growing habit" : "Just getting started"}}'>Steady reader</div>
+  <div class="rows">
+    <div class="row"><div class="name">Habit</div><div class="track"><div class="bar" data-var="stats.profile_habit" data-kind="bar"></div></div><div class="val" data-var="stats.profile_habit">84</div></div>
+    <div class="row"><div class="name">Stability</div><div class="track"><div class="bar" data-var="stats.profile_stability" data-kind="bar"></div></div><div class="val" data-var="stats.profile_stability">71</div></div>
+    <div class="row"><div class="name">Engagement</div><div class="track"><div class="bar" data-var="stats.profile_engagement" data-kind="bar"></div></div><div class="val" data-var="stats.profile_engagement">80</div></div>
+    <div class="row"><div class="name">Depth</div><div class="track"><div class="bar" data-var="stats.profile_depth" data-kind="bar"></div></div><div class="val" data-var="stats.profile_depth">76</div></div>
+  </div>
+  <div class="foot" data-template="{{stats.books_finished}} books finished. Longest sitting {{stats.longest_session_time}}.">14 books finished. Longest sitting 2h 22m.</div>
+</div>
+</body>
+</html>

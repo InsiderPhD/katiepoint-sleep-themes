@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html data-kp-orientation="portrait" data-kp-overlay data-kp-dither="threshold">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face { font-family: Inter; font-weight: 400; src: url(Inter-Regular.ttf); }
+  @font-face { font-family: Inter; font-weight: 700; src: url(Inter-Bold.ttf); }
+  /* An overlay: no background, so the page underneath shows through. */
+  html, body { margin: 0; height: 100%; }
+  body { font-family: Inter, sans-serif; }
+  .badge {
+    position: absolute; right: 18px; bottom: 18px; display: flex; align-items: center; gap: 10px;
+    padding: 9px 18px 9px 12px; background: #000; color: #fff; border: 3px solid #fff; border-radius: 30px;
+  }
+  .time { font-size: 22px; font-weight: 700; letter-spacing: 1px; }
+</style>
+</head>
+<body>
+<div class="badge">
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+    <span class="time" data-template="{{time.now:HH:mm}}" data-hide-if-empty>22:41</span>
+  </div>
+</body>
+</html>

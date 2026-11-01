@@ -1,0 +1,5 @@
+{
+  "name": "Page with your stats",
+  "description": "Leaves the page on screen with a card of your streak, today's reading and your daily goal.",
+  "order": 21
+}

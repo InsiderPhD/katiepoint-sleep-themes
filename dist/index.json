@@ -1,0 +1,1026 @@
+{
+  "version": 1,
+  "themes": [
+    {
+      "id": "cover",
+      "name": "Book cover",
+      "description": "The cover of the book you're reading, whole and in greys. With no book open it says Sleeping.",
+      "orientation": "portrait",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "theme.bin",
+              "size": 95
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 53918
+            },
+            {
+              "name": "theme.bin",
+              "size": 95
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cover-crop",
+      "name": "Book cover, full screen",
+      "description": "The cover of the book you're reading, cropped at the edges to fill the whole screen.",
+      "orientation": "portrait",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "theme.bin",
+              "size": 95
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 53918
+            },
+            {
+              "name": "theme.bin",
+              "size": 95
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "custom",
+      "name": "Your pictures",
+      "description": "A different picture each time from the /sleep folder on your SD card (or /sleep.bmp). Put BMP images there.",
+      "orientation": "portrait",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "theme.bin",
+              "size": 96
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 53918
+            },
+            {
+              "name": "theme.bin",
+              "size": 96
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "cover-or-custom",
+      "name": "Cover on your pictures",
+      "description": "The cover of the book you're reading on top of a picture from your /sleep folder; just the picture when no book is open.",
+      "orientation": "portrait",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "theme.bin",
+              "size": 159
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 53918
+            },
+            {
+              "name": "theme.bin",
+              "size": 159
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "dark",
+      "name": "Sleeping, dark",
+      "description": "White on black: an open book and Sleeping, with the time you put it down.",
+      "orientation": "portrait",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 17398
+            },
+            {
+              "name": "theme.bin",
+              "size": 105
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 53918
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 17398
+            },
+            {
+              "name": "theme.bin",
+              "size": 105
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "light",
+      "name": "Sleeping, light",
+      "description": "Black on white: an open book and Sleeping, with the time you put it down.",
+      "orientation": "portrait",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 17398
+            },
+            {
+              "name": "theme.bin",
+              "size": 105
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 53918
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 17398
+            },
+            {
+              "name": "theme.bin",
+              "size": 105
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "blank",
+      "name": "Blank",
+      "description": "A plain white screen.",
+      "orientation": "portrait",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "theme.bin",
+              "size": 32
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 53918
+            },
+            {
+              "name": "theme.bin",
+              "size": 32
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "page-overlay",
+      "name": "Page with a moon",
+      "description": "Leaves the page you were reading on screen, with a small moon and the time in the corner.",
+      "orientation": "portrait",
+      "overlay": true,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "mask.bmp",
+              "size": 48062
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 24423
+            },
+            {
+              "name": "theme.bin",
+              "size": 99
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 53918
+            },
+            {
+              "name": "mask.bmp",
+              "size": 53918
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 24423
+            },
+            {
+              "name": "theme.bin",
+              "size": 99
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "stats-overlay",
+      "name": "Page with your stats",
+      "description": "Leaves the page on screen with a card of your streak, today's reading and your daily goal.",
+      "orientation": "portrait",
+      "overlay": true,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "mask.bmp",
+              "size": 48062
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 38803
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 14228
+            },
+            {
+              "name": "theme.bin",
+              "size": 488
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 53918
+            },
+            {
+              "name": "mask.bmp",
+              "size": 53918
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 38803
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 14228
+            },
+            {
+              "name": "theme.bin",
+              "size": 488
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "bookmark",
+      "name": "Bookmark",
+      "description": "Where you put the book down: progress in huge type, time left at your pace, title and cover.",
+      "orientation": "landscape",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 35975
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 23044
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 38803
+            },
+            {
+              "name": "theme.bin",
+              "size": 520
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 52862
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 35975
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 23044
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 38803
+            },
+            {
+              "name": "theme.bin",
+              "size": 520
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "shelf",
+      "name": "Shelf",
+      "description": "The book you're reading beside the last few you opened.",
+      "orientation": "landscape",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 27522
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 15248
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 13000
+            },
+            {
+              "name": "theme.bin",
+              "size": 706
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 52862
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 27522
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 15248
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 13000
+            },
+            {
+              "name": "theme.bin",
+              "size": 706
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "habit",
+      "name": "Reading habit",
+      "description": "Your streak in huge type, your best run, and this week's goal days as moons.",
+      "orientation": "portrait",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 32405
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 22692
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 551
+            },
+            {
+              "name": "theme.bin",
+              "size": 1121
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 53918
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 32405
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 22692
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 551
+            },
+            {
+              "name": "theme.bin",
+              "size": 1121
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "year-in-books",
+      "name": "Year in books",
+      "description": "Books finished this year and this month, your most-read authors and the shelves you return to.",
+      "orientation": "portrait",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 28958
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 22692
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 63130
+            },
+            {
+              "name": "theme.bin",
+              "size": 864
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 53918
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 28958
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 22692
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 63130
+            },
+            {
+              "name": "theme.bin",
+              "size": 864
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "rhythm",
+      "name": "Reading rhythm",
+      "description": "When in the day you read, as four bars, and whether that makes you an early bird or a night owl.",
+      "orientation": "landscape",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 75082
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 35975
+            },
+            {
+              "name": "theme.bin",
+              "size": 1144
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 52862
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 75082
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 35975
+            },
+            {
+              "name": "theme.bin",
+              "size": 1144
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "reader-profile",
+      "name": "Reader profile",
+      "description": "Your reader score out of 100 with a one-word verdict, broken down into habit, stability, engagement and depth.",
+      "orientation": "portrait",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 22703
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 52415
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 35975
+            },
+            {
+              "name": "theme.bin",
+              "size": 944
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 53918
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 22703
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 52415
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 35975
+            },
+            {
+              "name": "theme.bin",
+              "size": 944
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "bedside-clock",
+      "name": "Bedside clock",
+      "description": "The time you put it down, big, with the date, battery and how far into the chapter you got.",
+      "orientation": "portrait",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 20193
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 20381
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 74615
+            },
+            {
+              "name": "theme.bin",
+              "size": 598
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 53918
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 20193
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 20381
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 74615
+            },
+            {
+              "name": "theme.bin",
+              "size": 598
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "library-card",
+      "name": "Library card",
+      "description": "The book you're reading as a library checkout card: when you borrowed it, days out, sittings, and a date stamp.",
+      "orientation": "portrait",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 35975
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 38803
+            },
+            {
+              "name": "theme.bin",
+              "size": 786
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 53918
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 35975
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 38803
+            },
+            {
+              "name": "theme.bin",
+              "size": 786
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "gazette",
+      "name": "The Nightly Gazette",
+      "description": "Tonight's reading as a newspaper front page, with a headline written from your stats.",
+      "orientation": "portrait",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 29875
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 57548
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 17398
+            },
+            {
+              "name": "theme.bin",
+              "size": 1241
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 53918
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 29875
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 57548
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 17398
+            },
+            {
+              "name": "theme.bin",
+              "size": 1241
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "spines",
+      "name": "Spines",
+      "description": "Your recent books as spines on a shelf, titles running up them, beside the one you're reading.",
+      "orientation": "landscape",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 38803
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 9795
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 31372
+            },
+            {
+              "name": "theme.bin",
+              "size": 681
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 52862
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 38803
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 9795
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 31372
+            },
+            {
+              "name": "theme.bin",
+              "size": 681
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "departures",
+      "name": "Departures",
+      "description": "A split-flap board of your hours read, streak and minutes this week, with the book that's next.",
+      "orientation": "portrait",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 8090
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 75082
+            },
+            {
+              "name": "theme.bin",
+              "size": 733
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 53918
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 8090
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 75082
+            },
+            {
+              "name": "theme.bin",
+              "size": 733
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "finished-ticket",
+      "name": "Finished-book ticket",
+      "description": "A tilted cover, a READ stamp with today's date, and a ticket with the time it took.",
+      "orientation": "portrait",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 31006
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 21331
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 17398
+            },
+            {
+              "name": "f3.cpfont",
+              "size": 38803
+            },
+            {
+              "name": "theme.bin",
+              "size": 594
+            }
+          ]
+        },
+        "792x528": {
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 53918
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 31006
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 21331
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 17398
+            },
+            {
+              "name": "f3.cpfont",
+              "size": 38803
+            },
+            {
+              "name": "theme.bin",
+              "size": 594
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

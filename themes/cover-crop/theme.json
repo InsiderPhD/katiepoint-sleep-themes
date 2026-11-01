@@ -1,0 +1,5 @@
+{
+  "name": "Book cover, full screen",
+  "description": "The cover of the book you're reading, cropped at the edges to fill the whole screen.",
+  "order": 11
+}

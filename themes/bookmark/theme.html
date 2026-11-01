@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html data-kp-orientation="landscape" data-kp-dither="threshold">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face { font-family: Inter; font-weight: 400; src: url(Inter-Regular.ttf); }
+  @font-face { font-family: Inter; font-weight: 700; src: url(Inter-Bold.ttf); }
+
+  body { margin: 0; background: #fff; color: #000; font-family: Inter, sans-serif; }
+  .wrap { position: absolute; inset: 48px 56px; display: flex; gap: 48px; }
+  .left { position: relative; flex: 1; }
+  .kicker { font-size: 18px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; }
+  .big { margin-top: 10px; font-size: 140px; font-weight: 700; line-height: 1; letter-spacing: -4px; }
+  .sub { margin-top: 8px; font-size: 18px; }
+  .book { position: absolute; left: 0; bottom: 0; width: 100%; }
+  .title { font-size: 30px; font-weight: 700; line-height: 36px; }
+  .author { margin-top: 4px; font-size: 18px; }
+  .track { margin-top: 18px; height: 10px; border: 2px solid #000; border-radius: 8px; padding: 2px; }
+  .bar { height: 100%; }
+  .cover { width: 220px; height: 330px; object-fit: contain; align-self: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="left">
+    <div class="kicker" data-template="Put down at {{time.now:HH:mm}}">Put down at 22:41</div>
+    <div class="big" data-glyphs="digits" data-template="{{book.progress}}%" data-hide-if-empty>62%</div>
+    <div class="sub" data-template="{{book.time_left}} to go at your pace" data-hide-if-empty>4h 46m to go at your pace</div>
+    <div class="book">
+      <div class="title" data-var="book.title" data-max-lines="2" data-valign="bottom" data-overflow="ellipsis" data-hide-if-empty>Trollkarlens hatt</div>
+      <div class="author" data-var="book.author" data-hide-if-empty>Tove Jansson</div>
+      <div class="track"><div class="bar" data-var="book.progress" data-kind="bar"></div></div>
+    </div>
+  </div>
+  <img class="cover" data-var="book.cover" alt="">
+</div>
+</body>
+</html>

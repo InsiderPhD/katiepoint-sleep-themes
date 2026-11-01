@@ -1,0 +1,5 @@
+{
+  "name": "Shelf",
+  "description": "The book you're reading beside the last few you opened.",
+  "order": 50
+}

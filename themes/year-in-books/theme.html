@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html data-kp-orientation="portrait" data-kp-dither="threshold">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face { font-family: Inter; font-weight: 400; src: url(Inter-Regular.ttf); }
+  @font-face { font-family: Inter; font-weight: 700; src: url(Inter-Bold.ttf); }
+  html, body { margin: 0; height: 100%; }
+  body { background: #000; color: #fff; font-family: Inter, sans-serif; }
+  .page { box-sizing: border-box; height: 100%; padding: 44px 36px 40px; display: flex; flex-direction: column; }
+  .kicker { font-size: 18px; font-weight: 700; letter-spacing: 6px; }
+  .big { margin-top: 6px; font-size: 170px; font-weight: 700; line-height: 1; letter-spacing: -6px; }
+  .label { font-size: 22px; line-height: 30px; }
+  .stats { margin: 30px 0; display: flex; border-top: 2px solid #fff; border-bottom: 2px solid #fff; }
+  .stats > div { flex: 1; padding: 14px 0; }
+  .stats > div + div { border-left: 2px solid #fff; padding-left: 16px; }
+  .num { font-size: 40px; font-weight: 700; line-height: 46px; }
+  .cap { font-size: 15px; letter-spacing: 1px; }
+  .list div { font-size: 22px; line-height: 34px; }
+  .list .k { margin-top: 18px; font-size: 18px; font-weight: 700; letter-spacing: 6px; line-height: 26px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px 10px; margin-top: 8px; }
+  .tags div { font-size: 22px; line-height: 30px; padding: 2px 12px; border: 2px solid #fff; border-radius: 18px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="kicker">YEAR IN BOOKS</div>
+  <div class="big" data-var="stats.finished_year" data-glyphs="digits">14</div>
+  <div class="label" data-template='{{plural(stats.finished_year, "book", "books")}} finished in {{time.now:yyyy}}'>books finished in 2026</div>
+  <div class="stats">
+    <div><div class="num" data-var="stats.finished_month">2</div><div class="cap">THIS MONTH</div></div>
+    <div><div class="num" data-var="stats.books_started">19</div><div class="cap">STARTED</div></div>
+    <div><div class="num" data-template="{{stats.total_hours}}h">61h</div><div class="cap">READING</div></div>
+  </div>
+  <div class="list">
+    <div class="k">MOST READ</div>
+    <div data-var="stats.top_author_1" data-overflow="ellipsis" data-hide-if-empty>Tove Jansson</div>
+    <div data-var="stats.top_author_2" data-overflow="ellipsis" data-hide-if-empty>Ursula K. Le Guin</div>
+    <div data-var="stats.top_author_3" data-overflow="ellipsis" data-hide-if-empty>Terry Pratchett</div>
+    <div class="k">YOUR SHELVES</div>
+  </div>
+  <div class="tags">
+    <div data-var="stats.top_tag_1" data-hide-if-empty>Fantasy</div>
+    <div data-var="stats.top_tag_2" data-hide-if-empty>Classics</div>
+    <div data-var="stats.top_tag_3" data-hide-if-empty>Short stories</div>
+  </div>
+</div>
+</body>
+</html>

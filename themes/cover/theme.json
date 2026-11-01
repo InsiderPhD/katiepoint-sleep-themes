@@ -1,0 +1,5 @@
+{
+  "name": "Book cover",
+  "description": "The cover of the book you're reading, whole and in greys. With no book open it says Sleeping.",
+  "order": 10
+}

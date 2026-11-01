@@ -1,0 +1,5 @@
+{
+  "name": "Your pictures",
+  "description": "A different picture each time from the /sleep folder on your SD card (or /sleep.bmp). Put BMP images there.",
+  "order": 12
+}

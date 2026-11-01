@@ -1,0 +1,48 @@
+name: Build themes
+
+# Compiles every theme for every screen size into dist/ and refreshes the
+# bench's starter list, then commits the result.
+on:
+  push:
+    branches: [main]
+    paths: ['themes/**', 'tools/**', 'fonts/**', 'package*.json', '.github/workflows/build.yml']
+  pull_request:
+    paths: ['themes/**', 'tools/**', 'fonts/**']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-themes-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    # macOS has the system fonts (Georgia, Courier New) the themes' static
+    # text names, so previews and baked backgrounds match a Mac or PC browser.
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: node tools/build-bench.mjs
+      - run: node tools/check-themes.mjs
+      - run: node tools/compile.mjs
+        env:
+          TZ: UTC
+      - name: Commit dist and bench
+        if: github.event_name != 'pull_request'
+        run: |
+          git add dist bench/index.html
+          if git diff --cached --quiet; then
+            echo "Nothing changed."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "build: compile themes"
+          git push

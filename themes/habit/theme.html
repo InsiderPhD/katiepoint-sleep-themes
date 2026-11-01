@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html data-kp-orientation="portrait" data-kp-dither="threshold">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face { font-family: Inter; font-weight: 400; src: url(Inter-Regular.ttf); }
+  @font-face { font-family: Inter; font-weight: 700; src: url(Inter-Bold.ttf); }
+  @font-face { font-family: "Moons icons"; src: url(icons-moons.otf); }
+  html, body { margin: 0; height: 100%; }
+  body { background: #fff; color: #000; font-family: Inter, sans-serif; }
+  .page { box-sizing: border-box; height: 100%; padding: 44px 36px 40px; display: flex; flex-direction: column; }
+  .kicker { font-size: 22px; font-weight: 700; letter-spacing: 6px; }
+  .big { margin-top: 18px; font-size: 180px; font-weight: 700; line-height: 1; letter-spacing: -6px; }
+  .line { font-size: 22px; line-height: 30px; }
+  .rule { margin: 30px 0 22px; border-top: 3px solid #000; }
+  .week { display: flex; justify-content: space-between; }
+  .day { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .day b { font-size: 16px; }
+  .moon { font-family: "Moons icons"; font-size: 46px; line-height: 1; }
+  .spacer { flex: 1; }
+  .track { margin-top: 10px; height: 14px; border: 3px solid #000; border-radius: 10px; padding: 2px; }
+  .bar { height: 100%; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="kicker">READING HABIT</div>
+  <div class="big" data-var="stats.streak" data-glyphs="digits">12</div>
+  <div class="line" data-template='{{plural(stats.streak, "day", "days")}} in a row. Your best is {{stats.max_streak}}.'>days in a row. Your best is 31.</div>
+  <div class="rule"></div>
+  <div class="line" data-template="{{stats.week_goal_days}} of 7 days at your goal this week">5 of 7 days at your goal this week</div>
+  <div class="week" style="margin-top: 18px;">
+      <div class="day"><span class="moon" data-template="{{stats.week_met_1 > 0 ? 1 : 0}}" data-glyphs="digits">1</span><b>M</b></div>
+      <div class="day"><span class="moon" data-template="{{stats.week_met_2 > 0 ? 1 : 0}}" data-glyphs="digits">1</span><b>T</b></div>
+      <div class="day"><span class="moon" data-template="{{stats.week_met_3 > 0 ? 1 : 0}}" data-glyphs="digits">0</span><b>W</b></div>
+      <div class="day"><span class="moon" data-template="{{stats.week_met_4 > 0 ? 1 : 0}}" data-glyphs="digits">1</span><b>T</b></div>
+      <div class="day"><span class="moon" data-template="{{stats.week_met_5 > 0 ? 1 : 0}}" data-glyphs="digits">1</span><b>F</b></div>
+      <div class="day"><span class="moon" data-template="{{stats.week_met_6 > 0 ? 1 : 0}}" data-glyphs="digits">1</span><b>S</b></div>
+      <div class="day"><span class="moon" data-template="{{stats.week_met_7 > 0 ? 1 : 0}}" data-glyphs="digits">0</span><b>S</b></div>
+  </div>
+  <div class="spacer"></div>
+  <div class="line" data-template='{{stats.goal_met ? "Goal met today: " + stats.today_time : stats.goal_left_time + " to go today"}}'>Goal met today: 34m</div>
+  <div class="track"><div class="bar" data-var="stats.goal_percent" data-kind="bar"></div></div>
+</div>
+</body>
+</html>

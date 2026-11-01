@@ -1,0 +1,15 @@
+{
+  "name": "katiepoint-sleep-themes",
+  "private": true,
+  "type": "module",
+  "description": "Sleep themes for KatiePoint readers: sources, compiled builds and the theme bench.",
+  "scripts": {
+    "bench": "node tools/build-bench.mjs",
+    "check": "node tools/check-themes.mjs",
+    "compile": "node tools/compile.mjs",
+    "build": "node tools/build-bench.mjs && node tools/compile.mjs"
+  },
+  "dependencies": {
+    "puppeteer": "^23.11.1"
+  }
+}

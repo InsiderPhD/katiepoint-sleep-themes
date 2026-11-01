@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html data-kp-orientation="landscape">
+<head>
+<meta charset="UTF-8">
+<style>
+  @font-face { font-family: Inter; font-weight: 400; src: url(Inter-Regular.ttf); }
+  @font-face { font-family: Inter; font-weight: 700; src: url(Inter-Bold.ttf); }
+
+  body { margin: 0; background: #fff; color: #000; font-family: Inter, sans-serif; }
+  .now { position: absolute; left: 40px; top: 36px; width: 300px; }
+  .kicker { font-size: 14px; font-weight: 700; letter-spacing: 3px; }
+  .cover { display: block; margin-top: 12px; width: 180px; height: 270px; object-fit: contain; }
+  .title { margin-top: 12px; width: 300px; font-size: 24px; line-height: 29px; font-weight: 700; }
+  .author { margin-top: 2px; font-size: 16px; }
+  .track { margin-top: 10px; width: 180px; height: 6px; border: 2px solid #000; border-radius: 5px; padding: 1px; }
+  .bar { height: 100%; }
+  .rule { position: absolute; left: 372px; top: 36px; bottom: 36px; border-left: 2px solid #000; }
+  .shelf { position: absolute; left: 404px; top: 36px; width: 360px; }
+  .books { margin-top: 12px; display: grid; grid-template-columns: repeat(3, 108px); gap: 18px 18px; }
+  .book img { display: block; width: 108px; height: 162px; object-fit: contain; }
+  .book div { margin-top: 6px; width: 108px; font-size: 13px; line-height: 16px; font-weight: 700; }
+</style>
+</head>
+<body>
+  <div class="now">
+    <div class="kicker">NOW READING</div>
+    <img class="cover" data-var="recent.1.cover" alt="">
+    <div class="title" data-var="recent.1.title" data-max-lines="2" data-overflow="ellipsis" data-hide-if-empty>Trollkarlens hatt</div>
+    <div class="author" data-var="recent.1.author" data-hide-if-empty>Tove Jansson</div>
+    <div class="track"><div class="bar" data-var="recent.1.progress" data-kind="bar"></div></div>
+  </div>
+  <div class="rule"></div>
+  <div class="shelf">
+    <div class="kicker">RECENTLY OPENED</div>
+    <div class="books">
+      <div class="book"><img data-var="recent.2.cover" alt=""><div data-var="recent.2.title" data-max-lines="2" data-overflow="ellipsis" data-hide-if-empty>Perdido Street Station</div></div>
+      <div class="book"><img data-var="recent.3.cover" alt=""><div data-var="recent.3.title" data-max-lines="2" data-overflow="ellipsis" data-hide-if-empty>The Left Hand of Darkness</div></div>
+      <div class="book"><img data-var="recent.4.cover" alt=""><div data-var="recent.4.title" data-max-lines="2" data-overflow="ellipsis" data-hide-if-empty>Small Gods</div></div>
+    </div>
+  </div>
+</body>
+</html>
