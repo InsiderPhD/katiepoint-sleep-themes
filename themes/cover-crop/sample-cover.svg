@@ -3,7 +3,7 @@
   <circle cx="230" cy="350" r="120" fill="#3a4f70"/>
   <circle cx="230" cy="350" r="70" fill="#d9c27a"/>
   <rect x="30" y="60" width="60" height="6" fill="#d9c27a"/>
-  <text x="30" y="120" font-family="Georgia,serif" font-size="32" font-weight="700" fill="#fff">Trollkarlens</text>
-  <text x="30" y="158" font-family="Georgia,serif" font-size="32" font-weight="700" fill="#fff">hatt</text>
-  <text x="30" y="420" font-family="Georgia,serif" font-size="20" fill="#fff">Tove Jansson</text>
+  <text x="30" y="120" font-family="Georgia,serif" font-size="32" font-weight="700" fill="#fff">The War of</text>
+  <text x="30" y="158" font-family="Georgia,serif" font-size="32" font-weight="700" fill="#fff">the Worlds</text>
+  <text x="30" y="420" font-family="Georgia,serif" font-size="20" fill="#fff">H. G. Wells</text>
 </svg>

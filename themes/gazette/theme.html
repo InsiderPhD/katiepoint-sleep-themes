@@ -29,14 +29,14 @@
   <div class="head" data-template='{{stats.goal_met ? "Reader hits daily goal" : "Reader puts book down early"}}{{stats.streak > 1 ? ", streak now " + stats.streak + " days" : ""}}' data-max-lines="3" data-overflow="ellipsis">Reader hits daily goal, streak now 12 days</div>
   <div class="cols">
     <div class="main">
-      <div class="lede" data-template="Another {{stats.today_time}} went into the book tonight, taking the reader's total to {{stats.total_time}}. With {{book.time_left}} left at the usual pace, {{book.title}} is now {{book.progress}} per cent read." data-max-lines="7" data-overflow="ellipsis" data-hide-if-empty>Another 34m went into the book tonight, taking the reader's total to 61h 12m. With 4h 46m left at the usual pace, Trollkarlens hatt is now 62 per cent read.</div>
+      <div class="lede" data-template="Another {{stats.today_time}} went into the book tonight, taking the reader's total to {{stats.total_time}}. With {{book.time_left}} left at the usual pace, {{book.title}} is now {{book.progress}} per cent read." data-max-lines="7" data-overflow="ellipsis" data-hide-if-empty>Another 34m went into the book tonight, taking the reader's total to 61h 12m. With 4h 46m left at the usual pace, The War of the Worlds is now 62 per cent read.</div>
       <img class="cover" data-var="book.cover" data-filter="grey" src="sample-cover.svg" alt="">
-      <div class="caption" data-template="{{book.title}} by {{book.author}}" data-max-lines="2" data-overflow="ellipsis" data-hide-if-empty>Trollkarlens hatt by Tove Jansson</div>
+      <div class="caption" data-template="{{book.title}} by {{book.author}}" data-max-lines="2" data-overflow="ellipsis" data-hide-if-empty>The War of the Worlds by H. G. Wells</div>
     </div>
     <div class="side">
       <div class="brief">IN BRIEF</div>
       <div class="item" data-template="{{stats.books_finished}} books finished to date" data-hide-if-empty>14 books finished to date</div>
-      <div class="item" data-template="Favourite author: {{stats.top_author_1}}" data-max-lines="2" data-overflow="ellipsis" data-hide-if-empty>Favourite author: Tove Jansson</div>
+      <div class="item" data-template="Favourite author: {{stats.top_author_1}}" data-max-lines="2" data-overflow="ellipsis" data-hide-if-empty>Favourite author: H. G. Wells</div>
       <div class="item" data-template="Longest sitting on record: {{stats.longest_session_time}}" data-max-lines="2" data-hide-if-empty>Longest sitting on record: 2h 22m</div>
       <div class="item" data-template="{{stats.days_this_month}} reading days this month" data-hide-if-empty>23 reading days this month</div>
       <div class="item" data-template="Battery at {{device.battery}}%" data-hide-if-empty>Battery at 82%</div>

@@ -235,7 +235,7 @@
       "overlay": true,
       "builds": {
         "800x480": {
-          "version": "af0a91fa0bd3",
+          "version": "65fbfff941e9",
           "files": [
             {
               "name": "bg.bmp",
@@ -256,7 +256,7 @@
           ]
         },
         "792x528": {
-          "version": "ca572aa43117",
+          "version": "8adc8d319b0c",
           "files": [
             {
               "name": "bg.bmp",
@@ -404,7 +404,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
-          "version": "6b4419845f8e",
+          "version": "895e0bc8f90a",
           "files": [
             {
               "name": "bg.bmp",
@@ -429,7 +429,7 @@
           ]
         },
         "792x528": {
-          "version": "f917ea4e749f",
+          "version": "73b617257766",
           "files": [
             {
               "name": "bg.bmp",
