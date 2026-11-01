@@ -9,6 +9,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
+          "version": "7e1d4b8e63e5",
           "files": [
             {
               "name": "bg.bmp",
@@ -21,6 +22,7 @@
           ]
         },
         "792x528": {
+          "version": "ae686a83a623",
           "files": [
             {
               "name": "bg.bmp",
@@ -42,6 +44,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
+          "version": "82b91768a45f",
           "files": [
             {
               "name": "bg.bmp",
@@ -54,6 +57,7 @@
           ]
         },
         "792x528": {
+          "version": "ea450a814462",
           "files": [
             {
               "name": "bg.bmp",
@@ -75,6 +79,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
+          "version": "fbdd1e60fded",
           "files": [
             {
               "name": "bg.bmp",
@@ -87,6 +92,7 @@
           ]
         },
         "792x528": {
+          "version": "abed6e702476",
           "files": [
             {
               "name": "bg.bmp",
@@ -108,6 +114,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
+          "version": "7750a989fc06",
           "files": [
             {
               "name": "bg.bmp",
@@ -124,6 +131,7 @@
           ]
         },
         "792x528": {
+          "version": "f52879c624de",
           "files": [
             {
               "name": "bg.bmp",
@@ -149,6 +157,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
+          "version": "898ed5176758",
           "files": [
             {
               "name": "bg.bmp",
@@ -165,6 +174,7 @@
           ]
         },
         "792x528": {
+          "version": "7b237bbb1003",
           "files": [
             {
               "name": "bg.bmp",
@@ -190,6 +200,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
+          "version": "b7972f393d3a",
           "files": [
             {
               "name": "bg.bmp",
@@ -202,6 +213,7 @@
           ]
         },
         "792x528": {
+          "version": "b83f90df3ee6",
           "files": [
             {
               "name": "bg.bmp",
@@ -223,6 +235,7 @@
       "overlay": true,
       "builds": {
         "800x480": {
+          "version": "af0a91fa0bd3",
           "files": [
             {
               "name": "bg.bmp",
@@ -243,6 +256,7 @@
           ]
         },
         "792x528": {
+          "version": "ca572aa43117",
           "files": [
             {
               "name": "bg.bmp",
@@ -272,6 +286,7 @@
       "overlay": true,
       "builds": {
         "800x480": {
+          "version": "0292b001e715",
           "files": [
             {
               "name": "bg.bmp",
@@ -296,6 +311,7 @@
           ]
         },
         "792x528": {
+          "version": "50a8f60c49c6",
           "files": [
             {
               "name": "bg.bmp",
@@ -329,6 +345,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
+          "version": "a93a1af58d04",
           "files": [
             {
               "name": "bg.bmp",
@@ -353,6 +370,7 @@
           ]
         },
         "792x528": {
+          "version": "51f08c9141db",
           "files": [
             {
               "name": "bg.bmp",
@@ -386,6 +404,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
+          "version": "6b4419845f8e",
           "files": [
             {
               "name": "bg.bmp",
@@ -410,6 +429,7 @@
           ]
         },
         "792x528": {
+          "version": "f917ea4e749f",
           "files": [
             {
               "name": "bg.bmp",
@@ -443,6 +463,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
+          "version": "d6d0e4a236fd",
           "files": [
             {
               "name": "bg.bmp",
@@ -467,6 +488,7 @@
           ]
         },
         "792x528": {
+          "version": "21510ad77a27",
           "files": [
             {
               "name": "bg.bmp",
@@ -500,6 +522,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
+          "version": "702fc7574f56",
           "files": [
             {
               "name": "bg.bmp",
@@ -519,11 +542,12 @@
             },
             {
               "name": "theme.bin",
-              "size": 864
+              "size": 1008
             }
           ]
         },
         "792x528": {
+          "version": "ae246e9d9c06",
           "files": [
             {
               "name": "bg.bmp",
@@ -543,7 +567,7 @@
             },
             {
               "name": "theme.bin",
-              "size": 864
+              "size": 1008
             }
           ]
         }
@@ -557,6 +581,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
+          "version": "f4c0946edadf",
           "files": [
             {
               "name": "bg.bmp",
@@ -577,6 +602,7 @@
           ]
         },
         "792x528": {
+          "version": "075baa2b29e3",
           "files": [
             {
               "name": "bg.bmp",
@@ -606,6 +632,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
+          "version": "49f62e49719d",
           "files": [
             {
               "name": "bg.bmp",
@@ -630,6 +657,7 @@
           ]
         },
         "792x528": {
+          "version": "56aa16da57bd",
           "files": [
             {
               "name": "bg.bmp",
@@ -663,6 +691,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
+          "version": "5e33e6b1c6ec",
           "files": [
             {
               "name": "bg.bmp",
@@ -687,6 +716,7 @@
           ]
         },
         "792x528": {
+          "version": "9c23c65a81f0",
           "files": [
             {
               "name": "bg.bmp",
@@ -720,6 +750,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
+          "version": "24110cc276ac",
           "files": [
             {
               "name": "bg.bmp",
@@ -740,6 +771,7 @@
           ]
         },
         "792x528": {
+          "version": "d67f95abc3ec",
           "files": [
             {
               "name": "bg.bmp",
@@ -769,6 +801,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
+          "version": "7e31d6ddd2b4",
           "files": [
             {
               "name": "bg.bmp",
@@ -793,6 +826,7 @@
           ]
         },
         "792x528": {
+          "version": "dd18a82183e9",
           "files": [
             {
               "name": "bg.bmp",
@@ -826,6 +860,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
+          "version": "ed55f2ababeb",
           "files": [
             {
               "name": "bg.bmp",
@@ -850,6 +885,7 @@
           ]
         },
         "792x528": {
+          "version": "28fd1d439c15",
           "files": [
             {
               "name": "bg.bmp",
@@ -883,6 +919,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
+          "version": "e0f80effca5b",
           "files": [
             {
               "name": "bg.bmp",
@@ -903,6 +940,7 @@
           ]
         },
         "792x528": {
+          "version": "a7cc7c86dd78",
           "files": [
             {
               "name": "bg.bmp",
@@ -932,6 +970,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
+          "version": "a3572373d15f",
           "files": [
             {
               "name": "bg.bmp",
@@ -964,6 +1003,7 @@
           ]
         },
         "792x528": {
+          "version": "76905bc421ee",
           "files": [
             {
               "name": "bg.bmp",
