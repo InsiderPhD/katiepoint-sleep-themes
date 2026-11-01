@@ -21,9 +21,9 @@ Both download the build for your reader's screen from `dist/` here.
 
 <!-- gallery:start -->
 
-Rendered for the X4 at 480×800 with sample values; tap an image for full size, or **X3** for
-the 528×792 build. Overlay themes are shown on a stand-in book page: on the reader they
-sit on whatever page you were reading.
+Rendered at 480×800 (X4, X4 Pro and X4C, which share a screen) with sample values; tap an
+image for full size, or **X3** for the 528×792 build. Overlay themes are shown on a stand-in
+book page: on the reader they sit on whatever page you were reading.
 
 ### Portrait
 
