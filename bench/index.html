@@ -342,7 +342,9 @@
     <div class="field">
       <label for="device">Device</label>
       <select id="device" class="ctl">
-        <option value="x4">X4 / X4 Pro · 800×480</option>
+        <option value="x4">X4 · 800×480</option>
+        <option value="x4pro">X4 Pro · 800×480</option>
+        <option value="x4c">X4C · 800×480</option>
         <option value="x3">X3 · 792×528</option>
       </select>
     </div>
@@ -779,7 +781,10 @@ const ThemeExpr = (() => {
 
 const LIVE_SEL = '[data-var],[data-template]';
 const MAX_ELEMENTS = 64, MAX_FONTS = 4, MAX_STRINGS = 4096;
-const SCREENS = { x4: [800, 480], x3: [792, 528] };
+// Every reader, by its panel. The X4, X4 Pro and X4C share a screen size, so
+// they share one store build; the choice also names the device in device.model.
+const SCREENS = { x4: [800, 480], x4pro: [800, 480], x4c: [800, 480], x3: [792, 528] };
+const DEVICE_MODELS = { x4: 'X4', x4pro: 'X4 Pro', x4c: 'X4C', x3: 'X3' };
 
 // ---------------------------------------------------------------------------
 // Sample readers. Overrides from the Values tab are layered on top.
@@ -1519,6 +1524,7 @@ function rawOf(name) {
   const o = state.overrides[state.scenario];
   if (o && has(o, name)) return o[name];
   if (name === 'time.now') return Math.floor(Date.now() / 1000);
+  if (name === 'device.model') return DEVICE_MODELS[state.device] || 'X4';
   return SCENARIOS[state.scenario][name];
 }
 const p2 = (n) => String(n).padStart(2, '0');
@@ -1699,6 +1705,7 @@ function fakePageUrl(w, h) {
 function buildDoc() {
   const doc = new DOMParser().parseFromString(injectIds(state.source), 'text/html');
   orientation = (doc.documentElement.getAttribute('data-kp-orientation') || 'portrait').toLowerCase();
+  if (!SCREENS[state.device]) state.device = 'x4';
   const [long, short] = SCREENS[state.device];
   [screenW, screenH] = orientation === 'landscape' ? [long, short] : [short, long];
   rewriteRefs(doc);
