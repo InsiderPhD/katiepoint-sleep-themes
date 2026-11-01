@@ -235,7 +235,7 @@
       "overlay": true,
       "builds": {
         "800x480": {
-          "version": "65fbfff941e9",
+          "version": "af0a91fa0bd3",
           "files": [
             {
               "name": "bg.bmp",
@@ -256,7 +256,7 @@
           ]
         },
         "792x528": {
-          "version": "8adc8d319b0c",
+          "version": "ca572aa43117",
           "files": [
             {
               "name": "bg.bmp",
