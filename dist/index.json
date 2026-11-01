@@ -971,6 +971,10 @@
               "size": 48062
             },
             {
+              "name": "front.bmp",
+              "size": 48062
+            },
+            {
               "name": "f0.cpfont",
               "size": 31006
             },
@@ -996,6 +1000,10 @@
           "files": [
             {
               "name": "bg.bmp",
+              "size": 53918
+            },
+            {
+              "name": "front.bmp",
               "size": 53918
             },
             {
