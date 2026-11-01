@@ -230,12 +230,12 @@
     {
       "id": "page-overlay",
       "name": "Page with a moon",
-      "description": "Leaves the page you were reading on screen, with a small moon and the time in the corner.",
+      "description": "Leaves the page you were reading on screen, with a small moon and the time you put it down in the corner.",
       "orientation": "portrait",
       "overlay": true,
       "builds": {
         "800x480": {
-          "version": "af0a91fa0bd3",
+          "version": "9e528321d3b5",
           "files": [
             {
               "name": "bg.bmp",
@@ -251,12 +251,12 @@
             },
             {
               "name": "theme.bin",
-              "size": 99
+              "size": 105
             }
           ]
         },
         "792x528": {
-          "version": "ca572aa43117",
+          "version": "03d048038442",
           "files": [
             {
               "name": "bg.bmp",
@@ -272,7 +272,7 @@
             },
             {
               "name": "theme.bin",
-              "size": 99
+              "size": 105
             }
           ]
         }
@@ -522,7 +522,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
-          "version": "507bb034c79a",
+          "version": "b0dd27f27d19",
           "files": [
             {
               "name": "bg.bmp",
@@ -542,12 +542,12 @@
             },
             {
               "name": "theme.bin",
-              "size": 1008
+              "size": 1047
             }
           ]
         },
         "792x528": {
-          "version": "829503e86039",
+          "version": "12d7aadd925b",
           "files": [
             {
               "name": "bg.bmp",
@@ -567,7 +567,7 @@
             },
             {
               "name": "theme.bin",
-              "size": 1008
+              "size": 1047
             }
           ]
         }
@@ -685,13 +685,13 @@
     },
     {
       "id": "bedside-clock",
-      "name": "Bedside clock",
-      "description": "The time you put it down, big, with the date, battery and how far into the chapter you got.",
+      "name": "Lights out",
+      "description": "When you put the book down, big, with the date, battery and how far into the chapter you got.",
       "orientation": "portrait",
       "overlay": false,
       "builds": {
         "800x480": {
-          "version": "5e33e6b1c6ec",
+          "version": "5dabfa8ac8f9",
           "files": [
             {
               "name": "bg.bmp",
@@ -699,7 +699,7 @@
             },
             {
               "name": "f0.cpfont",
-              "size": 20193
+              "size": 41736
             },
             {
               "name": "f1.cpfont",
@@ -711,12 +711,12 @@
             },
             {
               "name": "theme.bin",
-              "size": 598
+              "size": 618
             }
           ]
         },
         "792x528": {
-          "version": "9c23c65a81f0",
+          "version": "1893382cbf62",
           "files": [
             {
               "name": "bg.bmp",
@@ -724,7 +724,7 @@
             },
             {
               "name": "f0.cpfont",
-              "size": 20193
+              "size": 41736
             },
             {
               "name": "f1.cpfont",
@@ -736,7 +736,7 @@
             },
             {
               "name": "theme.bin",
-              "size": 598
+              "size": 618
             }
           ]
         }

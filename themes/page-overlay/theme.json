@@ -1,5 +1,5 @@
 {
   "name": "Page with a moon",
-  "description": "Leaves the page you were reading on screen, with a small moon and the time in the corner.",
+  "description": "Leaves the page you were reading on screen, with a small moon and the time you put it down in the corner.",
   "order": 20
 }

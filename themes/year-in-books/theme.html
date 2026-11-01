@@ -27,7 +27,7 @@
 <div class="page">
   <div class="kicker">YEAR IN BOOKS</div>
   <div class="big" data-var="stats.finished_year" data-glyphs="digits">14</div>
-  <div class="label" data-template='{{plural(stats.finished_year, "book", "books")}} finished in {{time.now:yyyy}}'>books finished in 2026</div>
+  <div class="label" data-template='{{plural(stats.finished_year, "book", "books")}} finished {{time.now ? "in " + date(time.now, "yyyy") : "this year"}}'>books finished in 2026</div>
   <div class="stats">
     <div><div class="num" data-var="stats.finished_month">2</div><div class="cap">THIS MONTH</div></div>
     <div><div class="num" data-var="stats.books_started">19</div><div class="cap">STARTED</div></div>

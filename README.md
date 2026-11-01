@@ -64,7 +64,7 @@ book page: on the reader they sit on whatever page you were reading.
 <td align="center" valign="top" width="25%">
 <a href="dist/800x480/page-overlay/preview.png"><img src="dist/800x480/page-overlay/preview.png" width="180" alt="Page with a moon"></a><br>
 <b>Page with a moon</b> <sub>overlay</sub><br><code>page-overlay</code> · <a href="dist/792x528/page-overlay/preview.png">X3</a><br>
-<sub>Leaves the page you were reading on screen, with a small moon and the time in the corner.</sub>
+<sub>Leaves the page you were reading on screen, with a small moon and the time you put it down in the corner.</sub>
 </td>
 <td align="center" valign="top" width="25%">
 <a href="dist/800x480/stats-overlay/preview.png"><img src="dist/800x480/stats-overlay/preview.png" width="180" alt="Page with your stats"></a><br>
@@ -89,9 +89,9 @@ book page: on the reader they sit on whatever page you were reading.
 <sub>Your reader score out of 100 with a one-word verdict, broken down into habit, stability, engagement and depth.</sub>
 </td>
 <td align="center" valign="top" width="25%">
-<a href="dist/800x480/bedside-clock/preview.png"><img src="dist/800x480/bedside-clock/preview.png" width="180" alt="Bedside clock"></a><br>
-<b>Bedside clock</b><br><code>bedside-clock</code> · <a href="dist/792x528/bedside-clock/preview.png">X3</a><br>
-<sub>The time you put it down, big, with the date, battery and how far into the chapter you got.</sub>
+<a href="dist/800x480/bedside-clock/preview.png"><img src="dist/800x480/bedside-clock/preview.png" width="180" alt="Lights out"></a><br>
+<b>Lights out</b><br><code>bedside-clock</code> · <a href="dist/792x528/bedside-clock/preview.png">X3</a><br>
+<sub>When you put the book down, big, with the date, battery and how far into the chapter you got.</sub>
 </td>
 </tr>
 <tr>

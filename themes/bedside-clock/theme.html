@@ -9,7 +9,8 @@
   body { background: #000; color: #fff; font-family: Inter, sans-serif; }
   .page { box-sizing: border-box; height: 100%; padding: 50px 30px 40px; display: flex; flex-direction: column; }
   .top { display: flex; justify-content: space-between; align-items: center; font-size: 20px; }
-  .clock { margin-top: 70px; font-size: 140px; font-weight: 700; line-height: 1; letter-spacing: -6px; text-align: center; }
+  .put { margin-top: 56px; text-align: center; font-size: 20px; font-weight: 700; letter-spacing: 6px; padding-left: 6px; }
+  .clock { margin-top: 6px; font-size: 140px; font-weight: 700; line-height: 1; letter-spacing: -6px; text-align: center; }
   .date { margin-top: 18px; text-align: center; font-size: 30px; letter-spacing: 4px; }
   .moon { margin: 34px auto 0; }
   .book { margin-top: auto; }
@@ -23,9 +24,12 @@
 <body>
 <div class="page">
   <div class="top">
-    <span data-template="{{time.zone}}" data-hide-if-empty>UTC+1</span>
+    <span>SLEEPING</span>
     <span style="width: 120px; text-align: right;" data-template='{{device.charging ? icon("battery-charging") : icon("battery")}} {{device.battery}}%' data-hide-if-empty>82%</span>
   </div>
+  <!-- The screen doesn't change while asleep, so the time is when the book was put down,
+       not a clock. Without a set clock (no network time yet, no clock chip) it is empty and hidden. -->
+  <div class="put" data-template='{{time.now ? "PUT DOWN AT" : ""}}' data-hide-if-empty>PUT DOWN AT</div>
   <div class="clock" data-glyphs="digits" data-template="{{time.now:HH:mm}}" data-hide-if-empty>22:41</div>
   <div class="date" data-template="{{time.now:dd.MM.yyyy}}" data-hide-if-empty>17.10.2026</div>
   <svg viewBox="0 0 24 24" width="54" height="54" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="moon"><path d="M18 5h4"/><path d="M20 3v4"/><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
