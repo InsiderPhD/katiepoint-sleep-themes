@@ -30,11 +30,6 @@ book page: on the reader they sit on whatever page you were reading.
 <table>
 <tr>
 <td align="center" valign="top" width="25%">
-<a href="dist/800x480/cover/preview.png"><img src="dist/800x480/cover/preview.png" width="180" alt="Book cover"></a><br>
-<b>Book cover</b><br><code>cover</code> · <a href="dist/792x528/cover/preview.png">X3</a><br>
-<sub>The cover of the book you're reading, whole and in greys. With no book open it says Sleeping.</sub>
-</td>
-<td align="center" valign="top" width="25%">
 <a href="dist/800x480/cover-crop/preview.png"><img src="dist/800x480/cover-crop/preview.png" width="180" alt="Book cover, full screen"></a><br>
 <b>Book cover, full screen</b><br><code>cover-crop</code> · <a href="dist/792x528/cover-crop/preview.png">X3</a><br>
 <sub>The cover of the book you're reading, cropped at the edges to fill the whole screen.</sub>
@@ -49,13 +44,13 @@ book page: on the reader they sit on whatever page you were reading.
 <b>Cover on your pictures</b><br><code>cover-or-custom</code> · <a href="dist/792x528/cover-or-custom/preview.png">X3</a><br>
 <sub>The cover of the book you're reading on top of a picture from your /sleep folder; just the picture when no book is open.</sub>
 </td>
-</tr>
-<tr>
 <td align="center" valign="top" width="25%">
 <a href="dist/800x480/dark/preview.png"><img src="dist/800x480/dark/preview.png" width="180" alt="Sleeping, dark"></a><br>
 <b>Sleeping, dark</b><br><code>dark</code> · <a href="dist/792x528/dark/preview.png">X3</a><br>
 <sub>White on black: an open book and Sleeping, with the time you put it down.</sub>
 </td>
+</tr>
+<tr>
 <td align="center" valign="top" width="25%">
 <a href="dist/800x480/light/preview.png"><img src="dist/800x480/light/preview.png" width="180" alt="Sleeping, light"></a><br>
 <b>Sleeping, light</b><br><code>light</code> · <a href="dist/792x528/light/preview.png">X3</a><br>
@@ -71,13 +66,13 @@ book page: on the reader they sit on whatever page you were reading.
 <b>Page with a moon</b> <sub>overlay</sub><br><code>page-overlay</code> · <a href="dist/792x528/page-overlay/preview.png">X3</a><br>
 <sub>Leaves the page you were reading on screen, with a small moon and the time in the corner.</sub>
 </td>
-</tr>
-<tr>
 <td align="center" valign="top" width="25%">
 <a href="dist/800x480/stats-overlay/preview.png"><img src="dist/800x480/stats-overlay/preview.png" width="180" alt="Page with your stats"></a><br>
 <b>Page with your stats</b> <sub>overlay</sub><br><code>stats-overlay</code> · <a href="dist/792x528/stats-overlay/preview.png">X3</a><br>
 <sub>Leaves the page on screen with a card of your streak, today's reading and your daily goal.</sub>
 </td>
+</tr>
+<tr>
 <td align="center" valign="top" width="25%">
 <a href="dist/800x480/habit/preview.png"><img src="dist/800x480/habit/preview.png" width="180" alt="Reading habit"></a><br>
 <b>Reading habit</b><br><code>habit</code> · <a href="dist/792x528/habit/preview.png">X3</a><br>
@@ -93,13 +88,13 @@ book page: on the reader they sit on whatever page you were reading.
 <b>Reader profile</b><br><code>reader-profile</code> · <a href="dist/792x528/reader-profile/preview.png">X3</a><br>
 <sub>Your reader score out of 100 with a one-word verdict, broken down into habit, stability, engagement and depth.</sub>
 </td>
-</tr>
-<tr>
 <td align="center" valign="top" width="25%">
 <a href="dist/800x480/bedside-clock/preview.png"><img src="dist/800x480/bedside-clock/preview.png" width="180" alt="Bedside clock"></a><br>
 <b>Bedside clock</b><br><code>bedside-clock</code> · <a href="dist/792x528/bedside-clock/preview.png">X3</a><br>
 <sub>The time you put it down, big, with the date, battery and how far into the chapter you got.</sub>
 </td>
+</tr>
+<tr>
 <td align="center" valign="top" width="25%">
 <a href="dist/800x480/library-card/preview.png"><img src="dist/800x480/library-card/preview.png" width="180" alt="Library card"></a><br>
 <b>Library card</b><br><code>library-card</code> · <a href="dist/792x528/library-card/preview.png">X3</a><br>
@@ -115,8 +110,6 @@ book page: on the reader they sit on whatever page you were reading.
 <b>Departures</b><br><code>departures</code> · <a href="dist/792x528/departures/preview.png">X3</a><br>
 <sub>A split-flap board of your hours read, streak and minutes this week, with the book that's next.</sub>
 </td>
-</tr>
-<tr>
 <td align="center" valign="top" width="25%">
 <a href="dist/800x480/finished-ticket/preview.png"><img src="dist/800x480/finished-ticket/preview.png" width="180" alt="Finished-book ticket"></a><br>
 <b>Finished-book ticket</b><br><code>finished-ticket</code> · <a href="dist/792x528/finished-ticket/preview.png">X3</a><br>

@@ -2,39 +2,6 @@
   "version": 1,
   "themes": [
     {
-      "id": "cover",
-      "name": "Book cover",
-      "description": "The cover of the book you're reading, whole and in greys. With no book open it says Sleeping.",
-      "orientation": "portrait",
-      "overlay": false,
-      "builds": {
-        "800x480": {
-          "files": [
-            {
-              "name": "bg.bmp",
-              "size": 48062
-            },
-            {
-              "name": "theme.bin",
-              "size": 95
-            }
-          ]
-        },
-        "792x528": {
-          "files": [
-            {
-              "name": "bg.bmp",
-              "size": 53918
-            },
-            {
-              "name": "theme.bin",
-              "size": 95
-            }
-          ]
-        }
-      }
-    },
-    {
       "id": "cover-crop",
       "name": "Book cover, full screen",
       "description": "The cover of the book you're reading, cropped at the edges to fill the whole screen.",
