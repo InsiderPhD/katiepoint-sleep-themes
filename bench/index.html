@@ -2405,7 +2405,25 @@ function statHtml(pt, labelText, name, unit) {
   return `<div style="${at(pt, 260, 30)} display: flex; align-items: baseline; gap: 10px; font-size: 22px;">\n  <span>${esc(labelText)}</span>\n  ${live('font-weight: 700;')}\n</div>`;
 }
 const STAT_ICON = ICON('<path d="M4 18h3V11H4zM10.5 18h3V6h-3zM17 18h3v-9h-3z"/>');
+// Three stats side by side in one box, each a big live value over a small
+// label. Every value shares one font size, so the block costs one of the
+// theme's four font/size pairs. Click a value to change which stat it shows.
+const TRIO_DEFAULT = [['day streak', 'stats.streak', ''], ['read today', 'stats.today_time', ''], ['of daily goal', 'stats.goal_percent', '%']];
+function trioHtml(pt) {
+  const cols = TRIO_DEFAULT.map(([labelText, name, unit], i) => {
+    const tpl = unitTemplate(name, unit);
+    const sample = esc(expand(tpl).text || formatValue(name) || '0');
+    const live = tpl === `{{${name}}}`
+      ? `<div data-var="${name}" data-hide-if-empty style="font-size: 34px; line-height: 40px; font-weight: 700;">${sample}</div>`
+      : `<div data-template="${esc(tpl)}" data-hide-if-empty style="font-size: 34px; line-height: 40px; font-weight: 700;">${sample}</div>`;
+    const rule = i ? ' border-left: 2px solid currentColor;' : '';
+    return `  <div style="flex: 1; text-align: center; padding: 4px 6px;${rule}">\n    ${live}\n    <div style="font-size: 14px;">${esc(labelText)}</div>\n  </div>`;
+  });
+  return `<div style="${at(pt, 400, 96)} width: 400px; display: flex; align-items: center; padding: 10px 0; border: 3px solid currentColor; border-radius: 12px;">\n${cols.join('\n')}\n</div>`;
+}
+const TRIO_ICON = ICON('<rect x="2" y="6" width="20" height="12" rx="2"/><path d="M9 6v12M15 6v12"/>');
 PARTS.splice(PARTS.findIndex((p) => p.group !== 'Text'), 0,
+  { label: 'Three stats', group: 'Stats', icon: TRIO_ICON, html: trioHtml },
   ...STAT_PRESETS.map(([labelText, name, unit]) => ({ label: labelText, group: 'Stats', icon: STAT_ICON, html: (pt) => statHtml(pt, labelText, name, unit) })));
 
 function renderPalette() {
