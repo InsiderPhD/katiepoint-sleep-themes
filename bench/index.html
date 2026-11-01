@@ -868,7 +868,7 @@ const STARTERS = {
     "assets": {
       "sample-cover.svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 300 450\">\n  <rect width=\"300\" height=\"450\" fill=\"#23324a\"/>\n  <circle cx=\"230\" cy=\"350\" r=\"120\" fill=\"#3a4f70\"/>\n  <circle cx=\"230\" cy=\"350\" r=\"70\" fill=\"#d9c27a\"/>\n  <rect x=\"30\" y=\"60\" width=\"60\" height=\"6\" fill=\"#d9c27a\"/>\n  <text x=\"30\" y=\"120\" font-family=\"Georgia,serif\" font-size=\"32\" font-weight=\"700\" fill=\"#fff\">Trollkarlens<\/text>\n  <text x=\"30\" y=\"158\" font-family=\"Georgia,serif\" font-size=\"32\" font-weight=\"700\" fill=\"#fff\">hatt<\/text>\n  <text x=\"30\" y=\"420\" font-family=\"Georgia,serif\" font-size=\"20\" fill=\"#fff\">Tove Jansson<\/text>\n<\/svg>\n"
     },
-    "html": "<!DOCTYPE html>\n<html data-kp-orientation=\"portrait\">\n<head>\n<meta charset=\"UTF-8\">\n<style>\n  @font-face { font-family: Inter; font-weight: 400; src: url(Inter-Regular.ttf); }\n  @font-face { font-family: Inter; font-weight: 700; src: url(Inter-Bold.ttf); }\n  html, body { margin: 0; height: 100%; }\n  body { background: #fff; color: #000; font-family: Inter, sans-serif; }\n  .mark { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; }\n  .mark div { font-size: 20px; font-weight: 700; letter-spacing: 8px; padding-left: 8px; }\n  /* No object-fit: contain, so the device crops the cover to the box's shape. */\n  .cover { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: fill; }\n<\/style>\n<\/head>\n<body>\n<div class=\"mark\">\n    <svg viewBox=\"0 0 24 24\" width=\"96\" height=\"96\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 5h4\"/><path d=\"M20 3v4\"/><path d=\"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401\"/><\/svg>\n    <div>SLEEPING<\/div>\n  <\/div>\n  <img class=\"cover\" data-var=\"book.cover\" data-filter=\"grey\" src=\"sample-cover.svg\" alt=\"\">\n<\/body>\n<\/html>\n"
+    "html": "<!DOCTYPE html>\n<html data-kp-orientation=\"portrait\">\n<head>\n<meta charset=\"UTF-8\">\n<style>\n  @font-face { font-family: Inter; font-weight: 400; src: url(Inter-Regular.ttf); }\n  @font-face { font-family: Inter; font-weight: 700; src: url(Inter-Bold.ttf); }\n  html, body { margin: 0; height: 100%; }\n  body { background: #fff; color: #000; font-family: Inter, sans-serif; }\n  .mark { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; }\n  .mark div { font-size: 20px; font-weight: 700; letter-spacing: 8px; padding-left: 8px; }\n  /* Zoom: the cover fills the screen, its edges cropped to the screen's shape. */\n  .cover { position: absolute; left: 0; top: 0; width: 100%; height: 100%; object-fit: cover; }\n<\/style>\n<\/head>\n<body>\n<div class=\"mark\">\n    <svg viewBox=\"0 0 24 24\" width=\"96\" height=\"96\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M18 5h4\"/><path d=\"M20 3v4\"/><path d=\"M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401\"/><\/svg>\n    <div>SLEEPING<\/div>\n  <\/div>\n  <img class=\"cover\" data-var=\"book.cover\" data-filter=\"grey\" src=\"sample-cover.svg\" alt=\"\">\n<\/body>\n<\/html>\n"
   },
   "custom": {
     "name": "custom",
@@ -1613,7 +1613,12 @@ function applyLive(doc, el) {
   if (isCoverTpl(tpl)) {
     const url = coverUrl(namesIn(tpl)[0]);
     if (el.tagName === 'IMG') { if (url) el.setAttribute('src', url); else el.style.visibility = 'hidden'; }
-    else { el.textContent = ''; el.style.background = url ? `url("${url}") center / contain no-repeat` : 'none'; }
+    else {
+      // A <div> cover has no object-fit of its own: size its background the same way.
+      const fit = el.style.objectFit === 'cover' ? 'cover' : el.style.objectFit === 'fill' ? '100% 100%' : 'contain';
+      el.textContent = '';
+      el.style.background = url ? `url("${url}") center / ${fit} no-repeat` : 'none';
+    }
     return;
   }
   if (el.getAttribute('data-kind') === 'bar') {
@@ -2839,7 +2844,8 @@ function elementPanel(el) {
   } else if (cover) {
     parts.push(`<div class="section"><h3>Cover</h3><p class="hint">${namesIn(tpl)[0] === 'sleep.image' ? 'A random picture from the card\'s /sleep folder (or /sleep.bmp), like the old Custom sleep screen. Blank when there is none.' : namesIn(tpl)[0] === 'book.cover' ? 'The open book\'s cover. Hidden when no book is open.' : 'A recent book\'s cover from the device\'s cache: its full cover if one has been made, else the home screen\'s thumbnail. Blank when there is no book in that slot.'}</p>
       <div class="row"><label for="f-covervar">Book</label><select class="ctl" id="f-covervar" data-i="${i}" data-attr="data-var">${varOptions(namesIn(tpl)[0], (n, k) => k === 'img')}</select></div>
-      <div class="row"><span class="lbl">Fit</span>${segHtml(`data-i="${i}" data-prop="object-fit"`, [['contain', 'Whole cover'], ['fill', 'Stretch']], cs.objectFit === 'fill' ? 'fill' : 'contain')}</div>
+      <div class="row"><span class="lbl">Fit</span>${segHtml(`data-i="${i}" data-prop="object-fit"`, [['contain', 'Whole cover'], ['cover', 'Zoom'], ['fill', 'Stretch']], ['contain', 'cover'].includes(cs.objectFit) ? cs.objectFit : 'fill')}</div>
+      <p class="hint">Zoom scales the image until it fills the box and cuts off what spills over, keeping the middle.</p>
       <div class="row"><label for="f-filter">Filter</label><select class="ctl" id="f-filter" data-i="${i}" data-attr="data-filter">${Object.entries(COVER_FILTER_LABELS).map(([v, l]) => `<option value="${v}"${(el.getAttribute('data-filter') || '') === v ? ' selected' : ''}>${l}</option>`).join('')}</select></div>
       <p class="hint">How the device draws it. Greyscale uses the screen's four greys (best for photos and covers; an image that is rotated or skewed is dithered instead). Dithered keeps greys as dot patterns; Black and white is crisper for line art and type.</p></div>`);
   } else if (bar) {

@@ -168,7 +168,8 @@
             the text: <code>{{stats.week_met_1 ? icon("star-filled") : icon("star")}}</code>.</li>
           <li><code>data-digit="0"</code> - only the nth digit from the right (flip-board tiles).</li>
           <li><code>data-var="book.cover"</code> on an <code>&lt;img&gt;</code> or <code>&lt;div&gt;</code> - the open
-            book's cover. <code>object-fit: contain</code> keeps its shape. <code>recent.2.cover</code> is a recent
+            book's cover. <code>object-fit: contain</code> shows all of it, <code>cover</code> zooms it to fill the box
+            and crops the overflow, anything else stretches it. <code>recent.2.cover</code> is a recent
             book's; <code>sleep.image</code> is a random image from <code>/sleep</code> (or <code>/sleep.bmp</code>).</li>
           <li><code>data-filter="grey"</code> on an image - drawn in the screen's four greys (keep live text off it);
             otherwise it becomes black and white: <code>dither</code> (default), <code>lighter</code>,
@@ -387,7 +388,7 @@
           div.style.display = cs.display === 'inline' ? 'inline-block' : cs.display;
           div.style.objectFit = cs.objectFit;
           div.style.backgroundImage = 'url("' + img.src + '")';
-          div.style.backgroundSize = cs.objectFit === 'contain' ? 'contain' : '100% 100%';
+          div.style.backgroundSize = cs.objectFit === 'contain' || cs.objectFit === 'cover' ? cs.objectFit : '100% 100%';
           div.style.backgroundRepeat = 'no-repeat';
           div.style.backgroundPosition = 'center';
           img.replaceWith(div);
@@ -847,6 +848,7 @@
           item.hideIfEmpty = item.el.hasAttribute('data-hide-if-empty');
           item.digit = item.el.hasAttribute('data-digit') ? parseInt(item.el.getAttribute('data-digit'), 10) : -1;
           item.contain = item.el.style.objectFit === 'contain' || cs.objectFit === 'contain';
+          item.zoom = !item.contain && (item.el.style.objectFit === 'cover' || cs.objectFit === 'cover');
           item.glyphs = item.el.getAttribute('data-glyphs') || '';
           const [a, b, c, dd] = item.m;
           item.transformed = Math.abs(a - 1) > 1e-3 || Math.abs(dd - 1) > 1e-3 || Math.abs(b) > 1e-3 || Math.abs(c) > 1e-3;
@@ -1199,6 +1201,7 @@
           if (it.transformed) flags |= 0x04;
           if (it.ellipsis) flags |= 0x08;
           if (it.contain) flags |= 0x10;
+          if (it.zoom) flags |= 0x40;
           if (it.kind === 1) flags |= 0x20;
           v.setUint8(o, it.kind);
           v.setUint8(o + 1, it.kind === 0 ? fontIndexOf(it) : 0);
