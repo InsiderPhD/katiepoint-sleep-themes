@@ -18,8 +18,8 @@
   .cap { font-size: 15px; letter-spacing: 1px; }
   .list div { font-size: 22px; line-height: 34px; }
   .list .k { margin-top: 18px; font-size: 18px; font-weight: 700; letter-spacing: 6px; line-height: 26px; }
-  /* One pill per line: data-fit sizes each pill to the real tag, up to the full width. */
-  .tags { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 8px; }
+  /* data-fit sizes each pill to the real tag; in a wrapping row the device lines them up and wraps them. */
+  .tags { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 8px; margin-top: 8px; }
   .tags div { box-sizing: border-box; width: fit-content; max-width: 100%; font-size: 22px; line-height: 30px; padding: 2px 12px; border: 2px solid #fff; border-radius: 18px; }
 </style>
 </head>

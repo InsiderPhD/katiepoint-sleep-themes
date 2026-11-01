@@ -184,7 +184,9 @@
             box. A title above an author stays put whether it wraps or not.</li>
           <li><code>data-fit</code> on live text with a border or background (a tag pill) - the device draws the
             border and background to fit the real text, up to the element's <code>max-width</code>, instead of
-            keeping the sample's size. Use a <code>width: fit-content</code> box on its own line.</li>
+            keeping the sample's size. Use a <code>width: fit-content</code> box on its own line, or put the pills
+            in a <code>display: flex; flex-wrap: wrap</code> parent: the device then lines them up and wraps them
+            itself (<code>data-max-lines</code> on the parent caps the rows).</li>
           <li>Live text and bars are drawn on top of everything static. Static art in front of an image (a card
             over a full-screen cover) stays in front: the device draws it again after the image.</li>
           <li>Live text keeps its font, size, weight, colour (black or white), alignment, letter-spacing,
@@ -828,10 +830,15 @@
         for (const item of live) {
           if (item.kind !== 0 || !item.el.hasAttribute('data-fit')) continue;
           const mw = view.getComputedStyle(item.el).maxWidth;
+          const pcs = view.getComputedStyle(item.el.parentElement);
+          const inFlow = pcs.display.endsWith('flex') && pcs.flexWrap === 'wrap';
           fitWidths.push([item.el, item.el.style.width]);
+          // A pill in a wrapping row may grow to the whole row.
           if (mw !== 'none') item.el.style.width = mw;
+          else if (inFlow) item.el.style.width = '100%';
         }
         // Measure after every display fix-up so later boxes see the final layout.
+        const flowGroups = new Map();
         for (const item of live) {
           const cs = view.getComputedStyle(item.el);
           Object.assign(item, measureMatrix(d, item.el));
@@ -869,6 +876,7 @@
           if (item.kind === 0 && item.el.hasAttribute('data-fit')) {
             item.fit = fitBoxOf(view, item, cs);
             if (!item.fit) errors.push('data-fit needs a border or background, an unrotated box and a single line: ' + item.tpl);
+            else item.fit.flow = fitFlowOf(d, item.el, flowGroups, errors);
           }
         }
         for (const [el, width] of fitWidths) el.style.width = width;
@@ -901,6 +909,34 @@
           // 0 none, 1 black, 2 white
           fill: bgVisible ? (luminanceOf(cs.backgroundColor) >= 128 ? 2 : 1) : 0,
         };
+      }
+
+      // A data-fit item whose parent is a wrapping flex row (flex-wrap: wrap):
+      // the device lays the group's pills out left to right in the parent's
+      // content box and wraps them itself, so they fit the real tags. The
+      // parent's data-max-lines caps the rows. Null when not in such a row.
+      function fitFlowOf(d, el, groups, errors) {
+        const parent = el.parentElement;
+        const view = d.defaultView;
+        const pcs = view.getComputedStyle(parent);
+        if (!pcs.display.endsWith('flex') || pcs.flexWrap !== 'wrap' || pcs.flexDirection !== 'row') return null;
+        if (!groups.has(parent)) {
+          const box = measureMatrix(d, parent);
+          const [a, b, c, dd] = box.m;
+          if (Math.abs(a - 1) > 1e-3 || Math.abs(dd - 1) > 1e-3 || Math.abs(b) > 1e-3 || Math.abs(c) > 1e-3) {
+            errors.push('A wrapping row of data-fit pills cannot be rotated or scaled');
+          }
+          if (groups.size >= 255) errors.push('Too many wrapping rows of data-fit pills');
+          const gap = (v) => Math.max(0, Math.min(255, Math.round(parseFloat(v) || 0)));
+          groups.set(parent, {
+            group: groups.size + 1,
+            x: Math.max(0, Math.round(box.m[4])), y: Math.max(0, Math.round(box.m[5])),
+            w: Math.max(1, Math.min(65535, box.w)),
+            gapX: gap(pcs.columnGap), gapY: gap(pcs.rowGap),
+            maxRows: Math.max(0, Math.min(255, parseInt(parent.getAttribute('data-max-lines'), 10) || 0)),
+          });
+        }
+        return groups.get(parent);
       }
 
       function hideLiveContent(d, it) {
@@ -1298,14 +1334,24 @@
             v.setUint8(o + 1, box.border);
             v.setUint8(o + 2, box.radius);
             v.setUint8(o + 3, it.align);
-            v.setUint8(o + 4, box.borderWhite ? 0x01 : 0);
+            // FLAG_WHITE | FLAG_FLOW
+            v.setUint8(o + 4, (box.borderWhite ? 0x01 : 0) | (box.flow ? 0x80 : 0));
             v.setUint8(o + 5, box.insetL);
             v.setUint8(o + 6, box.insetR);
             v.setUint8(o + 9, box.fill);
             v.setUint16(o + 10, Math.round(box.w), true);
             v.setUint16(o + 12, Math.round(box.h), true);
-            v.setUint16(o + 14, 0xffff, true);
+            v.setUint16(o + 14, box.flow ? box.flow.w : 0xffff, true);
             [1, 0, 0, 1, box.x, box.y].forEach((x, k) => v.setInt32(o + 16 + k * 4, fp(x), true));
+            if (box.flow) {
+              // The wrapping row: group, max rows, left/top, gaps (see ElementKind::Box).
+              v.setUint8(o + 7, box.flow.group);
+              v.setUint8(o + 8, box.flow.maxRows);
+              v.setUint16(o + 40, box.flow.x, true);
+              v.setUint16(o + 42, box.flow.y, true);
+              v.setUint8(o + 44, box.flow.gapX);
+              v.setUint8(o + 45, box.flow.gapY);
+            }
             return;
           }
           let flags = 0;

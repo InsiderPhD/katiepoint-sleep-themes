@@ -522,7 +522,7 @@
       "overlay": false,
       "builds": {
         "800x480": {
-          "version": "702fc7574f56",
+          "version": "507bb034c79a",
           "files": [
             {
               "name": "bg.bmp",
@@ -547,7 +547,7 @@
           ]
         },
         "792x528": {
-          "version": "ae246e9d9c06",
+          "version": "829503e86039",
           "files": [
             {
               "name": "bg.bmp",
@@ -1032,6 +1032,65 @@
             {
               "name": "theme.bin",
               "size": 594
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fit-test",
+      "name": "fit test",
+      "description": "Books finished this year and this month, your most-read authors and the shelves you return to.",
+      "orientation": "portrait",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "version": "cf868b3a5b02",
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 28958
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 22692
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 63130
+            },
+            {
+              "name": "theme.bin",
+              "size": 1047
+            }
+          ]
+        },
+        "792x528": {
+          "version": "8ab391e56b5f",
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 53918
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 28958
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 22692
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 63130
+            },
+            {
+              "name": "theme.bin",
+              "size": 1047
             }
           ]
         }
