@@ -382,7 +382,7 @@
         <p class="hint" style="margin-top:12px">Lucide icons, ISC License.</p>
       </div>
       <div class="tabpanel" role="tabpanel" id="panel-layers" hidden>
-        <p class="hint">The top of the list is drawn in front. Use the arrows or <kbd>⌘]</kbd> <kbd>⌘[</kbd> to move a part forward or back; add <kbd>Shift</kbd> for all the way. Live parts (<b>●</b>) are always drawn on top of static art on the device, whatever the order.</p>
+        <p class="hint">The top of the list is drawn in front. Use the arrows or <kbd>⌘]</kbd> <kbd>⌘[</kbd> to move a part forward or back; add <kbd>Shift</kbd> for all the way. Live text and bars (<b>●</b>) are always drawn on top of static art on the device, whatever the order; images keep their place, so a card can sit over a cover.</p>
         <p class="hint">Drag a row onto the middle of another to put it inside (a child moves with its parent), or onto its top or bottom edge to place it in front or behind. <b>↰</b> takes a part out of its parent; drop below the list for the top level. Parts stay where they are on screen.</p>
         <ul class="layers" id="layerList"></ul>
       </div>
@@ -3077,7 +3077,7 @@ function elementPanel(el) {
     <div class="row"><span class="lbl">Order</span><div class="seg">
       <button type="button" data-act="order" data-val="back" data-i="${i}" title="Send to back (⇧⌘[)">Back</button><button type="button" data-act="order" data-val="backward" data-i="${i}" title="Send backward (⌘[)">↓</button><button type="button" data-act="order" data-val="forward" data-i="${i}" title="Bring forward (⌘])">↑</button><button type="button" data-act="order" data-val="front" data-i="${i}" title="Bring to front (⇧⌘])">Front</button>
     </div></div>
-    ${live ? '<p class="hint">On the device this live part is drawn on top of all static art, whatever its layer.</p>' : ''}
+    ${live ? (isCoverTpl(templateOf(el)) ? '<p class="hint">On the device static art in front of this image stays in front of it, as here.</p>' : '<p class="hint">On the device this live part is drawn on top of all static art, whatever its layer.</p>') : ''}
   </div>`);
 
   if (!cover && !bar && !svg) {
@@ -3279,7 +3279,9 @@ function runChecks(d) {
       if (r.right <= 0 || r.bottom <= 0 || r.left >= screenW || r.top >= screenH) add('warn', `${lbl} is off the screen.`, idx);
       else {
         const hit = d.elementFromPoint(Math.min(screenW - 1, Math.max(0, r.left + r.width / 2)), Math.min(screenH - 1, Math.max(0, r.top + r.height / 2)));
-        if (hit && !isLive(hit.closest(LIVE_SEL)) && !el.contains(hit) && !hit.contains(el)) add('warn', `${lbl} is under <code>${esc(label(hit))}</code> here, but on the device live parts are drawn on top of all static art.`, idx);
+        // Static art over an image stays in front on the device (front.bmp);
+        // over live text or a bar it does not.
+        if (!isCoverTpl(tpl) && hit && !isLive(hit.closest(LIVE_SEL)) && !el.contains(hit) && !hit.contains(el)) add('warn', `${lbl} is under <code>${esc(label(hit))}</code> here, but on the device live text and bars are drawn on top of all static art.`, idx);
       }
     }
     if (el.getAttribute('data-kind') === 'bar' && el.hasAttribute('data-max') && !(parseInt(el.getAttribute('data-max'), 10) > 0)) add('warn', `${lbl} has a Full at that isn't a positive number, so it fills at 100.`, idx);

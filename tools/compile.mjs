@@ -1,7 +1,8 @@
 // Compiles every theme in themes/ for every screen size, with the same
 // compiler the device's Sleep Themes page runs, and writes dist/:
 //   dist/index.json
-//   dist/<WxH>/<id>/{theme.bin, bg.bmp, mask.bmp (overlay only), f0..f3.cpfont, preview.png}
+//   dist/<WxH>/<id>/{theme.bin, bg.bmp, mask.bmp (overlay only), front.bmp (art over images),
+//                    f0..f3.cpfont, preview.png}
 //
 //   node tools/compile.mjs [id ...]      (all themes when none are given)
 //
@@ -187,6 +188,7 @@ for (const t of themes) {
         themeBin: enc(compiled.themeBin),
         bmp: enc(compiled.bmp),
         mask: compiled.mask ? enc(compiled.mask) : null,
+        front: compiled.front ? enc(compiled.front) : null,
         fonts: compiled.fontFiles.map(enc),
         preview: canvases[1] ? canvases[1].toDataURL('image/png').split(',')[1] : null,
       };
@@ -209,6 +211,7 @@ for (const t of themes) {
     // half-installed theme is never picked up.
     const list = [write('bg.bmp', out.bmp)];
     if (out.mask) list.push(write('mask.bmp', out.mask));
+    if (out.front) list.push(write('front.bmp', out.front));
     out.fonts.forEach((f, i) => list.push(write(`f${i}.cpfont`, f)));
     list.push(write('theme.bin', out.themeBin));
     if (out.preview) write('preview.png', out.preview);

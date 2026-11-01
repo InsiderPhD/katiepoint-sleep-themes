@@ -182,8 +182,8 @@
           <li><code>data-valign="bottom"</code> (or <code>middle</code>, <code>top</code>) - a text box that keeps room for
             all of its <code>data-max-lines</code> and places shorter text at its bottom or middle, like a slide's text
             box. A title above an author stays put whether it wraps or not.</li>
-          <li>Live content is drawn on top of everything static, so don't put art over a live element (a stamp
-            over the cover would end up underneath it).</li>
+          <li>Live text and bars are drawn on top of everything static. Static art in front of an image (a card
+            over a full-screen cover) stays in front: the device draws it again after the image.</li>
           <li>Live text keeps its font, size, weight, colour (black or white), alignment, letter-spacing,
             <code>text-transform</code> and any 2D <code>transform</code> (rotate, scale, skew).</li>
           <li><code>&lt;html data-kp-orientation="landscape"&gt;</code> for a landscape theme;
@@ -959,6 +959,46 @@
         return black;
       }
 
+      // Static art in front of an image (a card over a full-screen cover): the
+      // device draws images after the background, so these pixels go in
+      // front.bmp and are drawn again after the images. Found by painting every
+      // image box solid black, then solid white: inside the boxes, what does
+      // not change is something in front. Null when nothing is.
+      async function frontBits(d, live, width, height, overlay) {
+        const covers = live.filter((it) => it.kind === 1);
+        if (!covers.length) return null;
+        const saved = covers.map((it) => it.el.style.backgroundColor);
+        const pixels = async (colour) => {
+          for (const it of covers) it.el.style.backgroundColor = colour;
+          const c = await rasterize(d, width, height, overlay);
+          return c.getContext('2d').getImageData(0, 0, width, height).data;
+        };
+        const dark = await pixels('#000');
+        const light = await pixels('#fff');
+        covers.forEach((it, k) => { it.el.style.backgroundColor = saved[k]; });
+        const front = new Uint8Array(width * height);
+        let any = false;
+        for (const it of covers) {
+          // The content box through its transform, as a bounding rectangle.
+          const [a, b, c, dd, e, f] = it.m;
+          const xs = [e, e + a * it.w, e + c * it.h, e + a * it.w + c * it.h];
+          const ys = [f, f + b * it.w, f + dd * it.h, f + b * it.w + dd * it.h];
+          const x0 = Math.max(0, Math.floor(Math.min(...xs))), x1 = Math.min(width, Math.ceil(Math.max(...xs)));
+          const y0 = Math.max(0, Math.floor(Math.min(...ys))), y1 = Math.min(height, Math.ceil(Math.max(...ys)));
+          for (let y = y0; y < y1; y++) {
+            for (let x = x0; x < x1; x++) {
+              const i = y * width + x, p = i * 4;
+              const diff = Math.max(Math.abs(dark[p] - light[p]), Math.abs(dark[p + 1] - light[p + 1]), Math.abs(dark[p + 2] - light[p + 2]));
+              if (diff < 24 && (!overlay || dark[p + 3] >= 128)) {
+                front[i] = 1;
+                any = true;
+              }
+            }
+          }
+        }
+        return any ? front : null;
+      }
+
       // Overlay mask: true (black in mask.bmp) where the theme paints.
       function alphaBits(canvas) {
         const { width, height } = canvas;
@@ -1189,8 +1229,8 @@
         v.setUint8(14, meta.orientation);
         v.setUint8(15, elements.length);
         v.setUint8(16, meta.fontCount);
-        // HEADER_FLAG_COVER_TEMPLATES (covers say which book they show) | HEADER_FLAG_OVERLAY
-        v.setUint8(17, 0x01 | (meta.overlay ? 0x02 : 0));
+        // HEADER_FLAG_COVER_TEMPLATES (covers say which book they show) | HEADER_FLAG_OVERLAY | HEADER_FLAG_FRONT
+        v.setUint8(17, 0x01 | (meta.overlay ? 0x02 : 0) | (meta.front ? 0x04 : 0));
         v.setUint16(18, stringBytes, true);
         const fp = (x) => Math.round(x * 65536);
         elements.forEach(({ it, tplOffset }, i) => {
@@ -1397,18 +1437,22 @@
         const bgCanvas = await rasterize(d, width, height, overlay);
         const bgBits = toBits(bgCanvas, threshold);
         const maskBits = overlay ? alphaBits(bgCanvas) : null;
+        const front = await frontBits(d, live, width, height, overlay);
 
-        const themeBin = packTheme({ width, height, orientation, overlay, fontCount: fontFiles.length }, live, fontIndexOf);
+        const themeBin = packTheme({ width, height, orientation, overlay, front: !!front, fontCount: fontFiles.length }, live, fontIndexOf);
         compiled = {
           themeBin,
           bmp: encodeBmp(bgBits, width, height),
           mask: maskBits && encodeBmp(maskBits, width, height),
+          front: front && encodeBmp(front, width, height),
           fontFiles,
         };
         if (overlay) log('Overlay: the page that was showing stays wherever the theme is transparent.');
+        if (front) log('Some art sits in front of an image; the device draws it after the image.');
 
         const figs = [['Background', bgBits], ['Preview (your stats right now)', previewBits]];
         if (maskBits) figs.push(['Overlay mask (black = painted)', maskBits]);
+        if (front) figs.push(['In front of images (black = drawn after them)', front]);
         for (const [label, bits] of figs) {
           const fig = document.createElement('figure');
           fig.appendChild(bitsToCanvas(bits, width, height));
@@ -1537,6 +1581,7 @@
           log('Uploading to ' + dir + '...');
           await upload(dir, 'bg.bmp', compiled.bmp);
           if (compiled.mask) await upload(dir, 'mask.bmp', compiled.mask);
+          if (compiled.front) await upload(dir, 'front.bmp', compiled.front);
           for (const [i, f] of compiled.fontFiles.entries()) await upload(dir, 'f' + i + '.cpfont', f);
           // Kept so the theme can be recompiled after a firmware update.
           await mkdir(dir, 'source');
@@ -1582,7 +1627,7 @@
         'https://raw.githubusercontent.com/InsiderPhD/katiepoint-sleep-themes/main/dist/index.json';
       const STORE_BASE = STORE_CATALOG_URL.slice(0, STORE_CATALOG_URL.lastIndexOf('/') + 1);
       const STORE_ID = /^[a-z0-9][a-z0-9-]{0,30}$/;
-      const STORE_FILE = /^(theme\.bin|bg\.bmp|mask\.bmp|f[0-3]\.cpfont)$/;
+      const STORE_FILE = /^(theme\.bin|bg\.bmp|mask\.bmp|front\.bmp|f[0-3]\.cpfont)$/;
       const storeBuildKey = () =>
         Math.max(device.panelWidth, device.panelHeight) + 'x' + Math.min(device.panelWidth, device.panelHeight);
 
