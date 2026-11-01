@@ -1,7 +1,7 @@
 name: Build themes
 
-# Compiles every theme for every screen size into dist/ and refreshes the
-# bench's starter list, then commits the result.
+# Compiles every theme for every screen size into dist/, refreshes the
+# bench's starter list and the README gallery, then commits the result.
 on:
   push:
     branches: [main]
@@ -34,10 +34,11 @@ jobs:
       - run: node tools/compile.mjs
         env:
           TZ: UTC
-      - name: Commit dist and bench
+      - run: node tools/build-readme.mjs
+      - name: Commit dist, bench and README
         if: github.event_name != 'pull_request'
         run: |
-          git add dist bench/index.html
+          git add dist bench/index.html README.md
           if git diff --cached --quiet; then
             echo "Nothing changed."
             exit 0

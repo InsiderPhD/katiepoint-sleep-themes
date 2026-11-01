@@ -7,7 +7,8 @@
     "bench": "node tools/build-bench.mjs",
     "check": "node tools/check-themes.mjs",
     "compile": "node tools/compile.mjs",
-    "build": "node tools/build-bench.mjs && node tools/compile.mjs"
+    "readme": "node tools/build-readme.mjs",
+    "build": "node tools/build-bench.mjs && node tools/compile.mjs && node tools/build-readme.mjs"
   },
   "dependencies": {
     "puppeteer": "^23.11.1"

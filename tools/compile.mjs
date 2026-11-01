@@ -160,6 +160,29 @@ for (const t of themes) {
         ctx.putImageData(page, 0, 0);
         canvases[1] = out;
       }
+      // The preview sits in a light reader bezel, so a white screen (Blank, the
+      // light themes) still has an edge on a white page: the README gallery and
+      // the web store show these.
+      if (canvases[1]) {
+        const screen = canvases[1];
+        const B = 18;
+        const framed = document.createElement('canvas');
+        framed.width = screen.width + 2 * B;
+        framed.height = screen.height + 2 * B;
+        const ctx = framed.getContext('2d');
+        ctx.fillStyle = '#e4e4e4';
+        ctx.strokeStyle = '#a8a8a8';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.roundRect(1, 1, framed.width - 2, framed.height - 2, 14);
+        ctx.fill();
+        ctx.stroke();
+        ctx.drawImage(screen, B, B);
+        ctx.strokeStyle = '#bdbdbd';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(B - 0.5, B - 0.5, screen.width + 1, screen.height + 1);
+        canvases[1] = framed;
+      }
       return {
         themeBin: enc(compiled.themeBin),
         bmp: enc(compiled.bmp),
