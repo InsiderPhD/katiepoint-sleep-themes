@@ -255,6 +255,12 @@
     font-size: 11px; color: var(--ink);
   }
   .layer .lbtns button:disabled { opacity: 0.35; cursor: default; }
+  .layer.dragging { opacity: 0.45; }
+  .layer.drop-inside { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .layer.drop-before { box-shadow: inset 0 2px 0 var(--accent); }
+  .layer.drop-after { box-shadow: inset 0 -2px 0 var(--accent); }
+  .layers.drop-top { box-shadow: inset 0 -2px 0 var(--accent); }
+  .layers { min-height: 60px; }
 
   /* Code + checks */
   .editor-head { display: flex; gap: 8px; padding: 6px 12px; border-bottom: 1px solid var(--line); font-size: 12px; color: var(--muted); }
@@ -377,6 +383,7 @@
       </div>
       <div class="tabpanel" role="tabpanel" id="panel-layers" hidden>
         <p class="hint">The top of the list is drawn in front. Use the arrows or <kbd>⌘]</kbd> <kbd>⌘[</kbd> to move a part forward or back; add <kbd>Shift</kbd> for all the way. Live parts (<b>●</b>) are always drawn on top of static art on the device, whatever the order.</p>
+        <p class="hint">Drag a row onto the middle of another to put it inside (a child moves with its parent), or onto its top or bottom edge to place it in front or behind. <b>↰</b> takes a part out of its parent; drop below the list for the top level. Parts stay where they are on screen.</p>
         <ul class="layers" id="layerList"></ul>
       </div>
       <div class="tabpanel" role="tabpanel" id="panel-values" hidden>
@@ -2549,7 +2556,8 @@ function renderLayers() {
       const z = frame.contentWindow.getComputedStyle(el).zIndex;
       li.innerHTML = `<button type="button" class="twisty" data-twisty="${i}" aria-label="Show or hide what's inside">${inner.length ? (collapsed.has(i) ? '▸' : '▾') : ''}</button>`
         + `<span class="lname">${isLive(el) ? '<b>●</b> ' : ''}${esc(label(el))}${z !== 'auto' ? `<span class="lmeta">z ${esc(z)}</span>` : ''}</span>`
-        + `<span class="lbtns"><button type="button" data-dir="forward" title="Bring forward (⌘])" ${pos === 0 ? 'disabled' : ''}>↑</button><button type="button" data-dir="backward" title="Send backward (⌘[)" ${pos === kids.length - 1 ? 'disabled' : ''}>↓</button></span>`;
+        + `<span class="lbtns">${depth ? '<button type="button" data-out title="Take out of its parent">↰</button>' : ''}<button type="button" data-dir="forward" title="Bring forward (⌘])" ${pos === 0 ? 'disabled' : ''}>↑</button><button type="button" data-dir="backward" title="Send backward (⌘[)" ${pos === kids.length - 1 ? 'disabled' : ''}>↓</button></span>`;
+      li.draggable = true;
       list.appendChild(li);
       if (inner.length && !collapsed.has(i)) walk(el, depth + 1);
     });
@@ -2566,8 +2574,159 @@ $('layerList').addEventListener('click', (e) => {
   const i = Number(row.dataset.i);
   const b = e.target.closest('[data-dir]');
   if (b) { reorder(i, b.dataset.dir); return; }
+  if (e.target.closest('[data-out]')) { const p = getEl(i)?.parentElement; if (p) moveInto(i, idxOf(p), 'before'); return; }
   if (e.shiftKey) toggleSelect(i); else select(i);
 });
+
+// ---------------------------------------------------------------------------
+// Nesting from the Layers list: a part moves inside another (as its front-most
+// child), or beside it (in front of / behind it, in the same parent). It keeps
+// its place on screen: an absolutely placed part gets new left/top for its new
+// containing block, and a static parent becomes position: relative so the
+// child moves with it from then on.
+const NO_CHILDREN = new Set(['IMG', 'BR', 'HR', 'INPUT', 'svg', 'SVG']);
+// where: 'inside' (front-most child), 'back' (back-most child), 'before' (in
+// front of target) or 'after' (behind it). Why `i` cannot go there; '' when it can.
+const INSIDE = new Set(['inside', 'back']);
+function nestProblem(i, target, where) {
+  const el = getEl(i), t = getEl(target);
+  if (!el || !t || el === t) return 'same';
+  if (el.contains(t)) return 'A part cannot go inside itself.';
+  if (INSIDE.has(where)) {
+    if (NO_CHILDREN.has(t.tagName) || t.closest('svg')) return 'That part cannot hold other parts.';
+    if (isLive(t)) return 'A live value is replaced by its text, so it cannot hold other parts.';
+  } else if (t.tagName === 'BODY') return 'same';
+  return '';
+}
+function moveInto(i, target, where) {
+  const problem = nestProblem(i, target, where);
+  if (problem) { if (problem !== 'same') toast(problem); return; }
+  const el = getEl(i), t = getEl(target);
+  const view = frame.contentWindow;
+  const newParent = INSIDE.has(where) ? t : t.parentElement;
+  const cs = view.getComputedStyle(el);
+  const absolute = cs.position === 'absolute';
+  if (absolute && view.getComputedStyle(newParent).transform !== 'none') {
+    toast('The new parent is rotated or scaled, so the part turns with it.');
+  }
+  // Where the part's layout box (before its own rotation) is on the page now.
+  const g = geom(el);
+  const w = el.offsetWidth ?? g.w, h = el.offsetHeight ?? g.h;
+  const left = g.cx - w / 2, top = g.cy - h / 2;
+  batch(() => {
+    if (absolute) {
+      const pcs = view.getComputedStyle(newParent);
+      if (newParent.tagName !== 'BODY' && pcs.position === 'static') {
+        editTag(idxOf(newParent), (c) => c.style({ position: 'relative' }), { render: false, undo: false });
+      }
+      // The containing block once moved: the new parent if positioned (it is
+      // now, unless it is the body), else its nearest positioned ancestor.
+      let cb = newParent;
+      if (newParent.tagName === 'BODY') {
+        while (cb && cb.tagName !== 'HTML' && view.getComputedStyle(cb).position === 'static') cb = cb.parentElement;
+      }
+      let ox = 0, oy = 0;
+      if (cb && cb.tagName !== 'HTML') { const r = cb.getBoundingClientRect(); ox = r.left + cb.clientLeft; oy = r.top + cb.clientTop; }
+      // left/top place the margin box, so a margin would shift it; right and
+      // bottom would fight left and top. Touched only when they are set.
+      const ch = { left: `${Math.round(left - ox)}px`, top: `${Math.round(top - oy)}px` };
+      if (el.style.right) ch.right = null;
+      if (el.style.bottom) ch.bottom = null;
+      if (parseFloat(cs.marginLeft) || parseFloat(cs.marginTop)) ch.margin = '0';
+      editTag(i, (c) => c.style(ch), { render: false, undo: false });
+    }
+    const src0 = state.source;
+    const tags = tokenize(src0);
+    const tagOf = (n) => tags.find((x) => !x.close && x.i === n);
+    const meTag = tagOf(i), tTag = tagOf(target);
+    const me = lineSpan(src0, meTag.start, outerRange(tags, meTag).end);
+    const tr = outerRange(tags, tTag);
+    const tSpan = lineSpan(src0, tTag.start, tr.end);
+    const lineIndent = (pos) => src0.slice(src0.lastIndexOf('\n', pos - 1) + 1).match(/^[ \t]*/)[0];
+    const tIndent = lineIndent(tTag.start);
+    // The list's top is the front, which is later in the source.
+    let at, indent;
+    if (where === 'inside') {
+      const close = lineSpan(src0, tr.closeStart, tr.end);
+      at = close.whole ? close.start : tr.closeStart;
+      indent = tIndent + '  ';
+    } else if (where === 'back') {
+      const open = lineSpan(src0, tTag.start, tTag.end);
+      at = open.whole ? open.end : tTag.end;
+      indent = tIndent + '  ';
+    } else if (where === 'before') {
+      at = tSpan.whole ? tSpan.end : tr.end;
+      indent = tIndent;
+    } else {
+      at = tSpan.start;
+      indent = tIndent;
+    }
+    const block = src0.slice(me.start, me.end).replace(/\s+$/, '');
+    const lines = block.split('\n');
+    const common = Math.min(...lines.filter((l) => l.trim()).map((l) => l.match(/^[ \t]*/)[0].length));
+    const text = lines.map((l) => (l.trim() ? indent + l.slice(common) : '')).join('\n') + '\n';
+    const lineStart = src0.lastIndexOf('\n', at - 1) + 1 === at;
+    const piece = lineStart ? text : '\n' + text + lineIndent(at);
+    let out = src0.slice(0, me.start) + src0.slice(me.end);
+    if (at > me.start) at -= me.end - me.start;
+    out = out.slice(0, at) + piece + out.slice(at);
+    const startAt = at + piece.indexOf('<');
+    selected = startTags(tokenize(out)).filter((x) => x.start < startAt).length;
+    multi = [];
+    if (where === 'inside') collapsed.delete(target);
+    commit(out, { undo: false });
+  });
+}
+let dragLayer = -1;
+const clearDropMarks = () => {
+  for (const r of $('layerList').querySelectorAll('.drop-inside, .drop-before, .drop-after, .dragging')) r.classList.remove('drop-inside', 'drop-before', 'drop-after', 'dragging');
+  $('layerList').classList.remove('drop-top');
+};
+// Where a drag over a row lands: its top quarter is in front, bottom quarter
+// behind, the middle inside.
+function dropZone(row, e) {
+  const r = row.getBoundingClientRect();
+  const f = (e.clientY - r.top) / r.height;
+  return f < 0.25 ? 'before' : f > 0.75 ? 'after' : 'inside';
+}
+$('layerList').addEventListener('dragstart', (e) => {
+  const row = e.target.closest('.layer');
+  if (!row) return;
+  dragLayer = Number(row.dataset.i);
+  e.dataTransfer.effectAllowed = 'move';
+  e.dataTransfer.setData('text/plain', String(dragLayer));
+  row.classList.add('dragging');
+});
+$('layerList').addEventListener('dragover', (e) => {
+  if (dragLayer < 0) return;
+  const row = e.target.closest('.layer');
+  clearDropMarks();
+  const self = $('layerList').querySelector(`.layer[data-i="${dragLayer}"]`);
+  if (self) self.classList.add('dragging');
+  if (!row) {
+    // Below the rows: the top level, at the back.
+    e.preventDefault();
+    $('layerList').classList.add('drop-top');
+    return;
+  }
+  const zone = dropZone(row, e);
+  if (nestProblem(dragLayer, Number(row.dataset.i), zone)) return;
+  e.preventDefault();
+  row.classList.add('drop-' + zone);
+});
+$('layerList').addEventListener('dragleave', (e) => { if (!$('layerList').contains(e.relatedTarget)) clearDropMarks(); });
+$('layerList').addEventListener('drop', (e) => {
+  if (dragLayer < 0) return;
+  e.preventDefault();
+  const i = dragLayer;
+  const row = e.target.closest('.layer');
+  clearDropMarks();
+  dragLayer = -1;
+  const body = frame.contentDocument && frame.contentDocument.body;
+  if (!row) { if (body) moveInto(i, idxOf(body), 'back'); return; }
+  moveInto(i, Number(row.dataset.i), dropZone(row, e));
+});
+$('layerList').addEventListener('dragend', () => { dragLayer = -1; clearDropMarks(); });
 $('layerList').addEventListener('pointerover', (e) => { const row = e.target.closest('.layer'); drawHover(row ? getEl(Number(row.dataset.i)) : null); });
 $('layerList').addEventListener('pointerleave', () => drawHover(null));
 
