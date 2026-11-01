@@ -182,6 +182,9 @@
           <li><code>data-valign="bottom"</code> (or <code>middle</code>, <code>top</code>) - a text box that keeps room for
             all of its <code>data-max-lines</code> and places shorter text at its bottom or middle, like a slide's text
             box. A title above an author stays put whether it wraps or not.</li>
+          <li><code>data-fit</code> on live text with a border or background (a tag pill) - the device draws the
+            border and background to fit the real text, up to the element's <code>max-width</code>, instead of
+            keeping the sample's size. Use a <code>width: fit-content</code> box on its own line.</li>
           <li>Live text and bars are drawn on top of everything static. Static art in front of an image (a card
             over a full-screen cover) stays in front: the device draws it again after the image.</li>
           <li>Live text keeps its font, size, weight, colour (black or white), alignment, letter-spacing,
@@ -818,6 +821,16 @@
           if (!isCover && !isBar && el.textContent === '') el.textContent = '\u00a0';
           live.push({ el, tpl, kind: isCover ? 1 : isBar ? 2 : 0, icons: info.icons, strings: info.strings });
         }
+        // A data-fit box is measured at its widest (max-width): the device fits
+        // its border to the live text inside that. Put back afterwards so the
+        // preview shows the sample's fitted box.
+        const fitWidths = [];
+        for (const item of live) {
+          if (item.kind !== 0 || !item.el.hasAttribute('data-fit')) continue;
+          const mw = view.getComputedStyle(item.el).maxWidth;
+          fitWidths.push([item.el, item.el.style.width]);
+          if (mw !== 'none') item.el.style.width = mw;
+        }
         // Measure after every display fix-up so later boxes see the final layout.
         for (const item of live) {
           const cs = view.getComputedStyle(item.el);
@@ -853,8 +866,41 @@
           const [a, b, c, dd] = item.m;
           item.transformed = Math.abs(a - 1) > 1e-3 || Math.abs(dd - 1) > 1e-3 || Math.abs(b) > 1e-3 || Math.abs(c) > 1e-3;
           if (item.w <= 0 || item.h <= 0) errors.push('A live element has no size: ' + item.tpl);
+          if (item.kind === 0 && item.el.hasAttribute('data-fit')) {
+            item.fit = fitBoxOf(view, item, cs);
+            if (!item.fit) errors.push('data-fit needs a border or background, an unrotated box and a single line: ' + item.tpl);
+          }
         }
+        for (const [el, width] of fitWidths) el.style.width = width;
         return { live, errors };
+      }
+
+      // data-fit: the element's own border and background, which the device
+      // draws around the live text (an extra element, kind 3, just before the
+      // text's). Only for upright single-line boxes with a uniform border.
+      function fitBoxOf(view, it, cs) {
+        if (it.transformed || it.maxLines > 1) return null;
+        const px = (v) => Math.max(0, Math.round(parseFloat(v) || 0));
+        const border = cs.borderTopStyle === 'none' ? 0 : px(cs.borderTopWidth);
+        const bg = cs.backgroundColor.match(/[\d.]+/g) || [];
+        const bgVisible = bg.length >= 3 && (bg.length < 4 || parseFloat(bg[3]) > 0.5);
+        if (!border && !bgVisible) return null;
+        const insetL = px(cs.borderLeftWidth) + px(cs.paddingLeft);
+        const insetR = px(cs.borderRightWidth) + px(cs.paddingRight);
+        const insetT = px(cs.borderTopWidth) + px(cs.paddingTop);
+        const insetB = px(cs.borderBottomWidth) + px(cs.paddingBottom);
+        const outerH = it.h + insetT + insetB;
+        const r = cs.borderTopLeftRadius;
+        const radius = Math.min(Math.floor(outerH / 2), r.endsWith('%') ? Math.round((outerH * parseFloat(r)) / 100) : px(r));
+        return {
+          w: it.w + insetL + insetR, h: outerH,
+          x: it.m[4] - insetL, y: it.m[5] - insetT,
+          insetL: Math.min(255, insetL), insetR: Math.min(255, insetR),
+          border: Math.min(255, border), radius: Math.min(255, radius),
+          borderWhite: luminanceOf(cs.borderTopColor) >= 128,
+          // 0 none, 1 black, 2 white
+          fill: bgVisible ? (luminanceOf(cs.backgroundColor) >= 128 ? 2 : 1) : 0,
+        };
       }
 
       function hideLiveContent(d, it) {
@@ -864,6 +910,12 @@
           el.style['border' + side + 'Color'] = cs['border' + side + 'Color'];
         }
         el.style.outlineColor = cs.outlineColor;
+        if (it.fit) {
+          // The device draws this box at the live text's width.
+          for (const side of ['Top', 'Right', 'Bottom', 'Left']) el.style['border' + side + 'Color'] = 'transparent';
+          el.style.backgroundColor = 'transparent';
+          el.style.boxShadow = 'none';
+        }
         if (it.kind === 1) {
           el.style.backgroundImage = 'none';
           // The preview's data-filter look is not art: an inverted cover's
@@ -1218,8 +1270,13 @@
           return offsetOf.get(s);
         }
         // Covers keep their template too: it says which book (book.cover, recent.N.cover).
-        const elements = live.map((it) => ({ it, tplOffset: addString(it.tplDevice || it.tpl) }));
+        const elements = [];
+        for (const it of live) {
+          if (it.fit) elements.push({ box: it.fit, it });
+          elements.push({ it, tplOffset: addString(it.tplDevice || it.tpl) });
+        }
         if (stringBytes > device.limits.strings) throw new Error('Templates are too long (' + stringBytes + ' bytes)');
+        if (elements.length > device.limits.elements) throw new Error('Too many live elements (' + elements.length + ' with data-fit boxes, max ' + device.limits.elements + ')');
         const buf = new ArrayBuffer(32 + elements.length * 48 + stringBytes);
         const v = new DataView(buf);
         'KPTHEME'.split('').forEach((c, i) => v.setUint8(i, c.charCodeAt(0)));
@@ -1233,8 +1290,24 @@
         v.setUint8(17, 0x01 | (meta.overlay ? 0x02 : 0) | (meta.front ? 0x04 : 0));
         v.setUint16(18, stringBytes, true);
         const fp = (x) => Math.round(x * 65536);
-        elements.forEach(({ it, tplOffset }, i) => {
+        elements.forEach(({ it, tplOffset, box }, i) => {
           const o = 32 + i * 48;
+          if (box) {
+            // ElementKind::Box: the border box, drawn fitted to the next element's text.
+            v.setUint8(o, 3);
+            v.setUint8(o + 1, box.border);
+            v.setUint8(o + 2, box.radius);
+            v.setUint8(o + 3, it.align);
+            v.setUint8(o + 4, box.borderWhite ? 0x01 : 0);
+            v.setUint8(o + 5, box.insetL);
+            v.setUint8(o + 6, box.insetR);
+            v.setUint8(o + 9, box.fill);
+            v.setUint16(o + 10, Math.round(box.w), true);
+            v.setUint16(o + 12, Math.round(box.h), true);
+            v.setUint16(o + 14, 0xffff, true);
+            [1, 0, 0, 1, box.x, box.y].forEach((x, k) => v.setInt32(o + 16 + k * 4, fp(x), true));
+            return;
+          }
           let flags = 0;
           if (it.white) flags |= 0x01;
           if (it.hideIfEmpty) flags |= 0x02;
@@ -1656,9 +1729,14 @@
             if (!res.ok) throw new Error(f.name + ': HTTP ' + res.status);
             blobs.push([f.name, await res.blob()]);
           }
-          // Becomes the sleep screen when the configured theme isn't on the card
-          // (a fresh device names one it doesn't have yet).
-          const adopt = !device.active || !(await installedThemeNames()).has(device.active);
+          // Which build this is: the device's store screen and this page offer
+          // an update when the store's version moves on.
+          if (build.version) blobs.push(['store.ver', new Blob([build.version])]);
+          // A new theme becomes the sleep screen when the configured one isn't on
+          // the card. Updates never switch it, and light and dark are built in.
+          const onCard = await installedThemeNames();
+          const adopt = !onCard.has(theme.id) && device.active !== 'light' && device.active !== 'dark' &&
+            (!device.active || !onCard.has(device.active));
           const root = device.themesDir;
           const dir = root + '/' + theme.id;
           await mkdir('/', root.slice(1));
@@ -1675,6 +1753,17 @@
         } catch (e) {
           msg.textContent = 'Could not install ' + theme.name + ': ' + e.message;
           button.disabled = false;
+        }
+      }
+
+      // The version a store install recorded, or '' (installed by hand, or by
+      // older firmware: offered as an update).
+      async function installedVersion(id) {
+        try {
+          const res = await fetch('/download?path=' + encodeURIComponent(device.themesDir + '/' + id + '/store.ver') + '&_=' + Date.now());
+          return res.ok ? (await res.text()).trim() : '';
+        } catch (e) {
+          return '';
         }
       }
 
@@ -1701,6 +1790,11 @@
             t.builds[key].files.every((f) => STORE_FILE.test(f.name || '')),
         );
         const installed = await installedThemeNames();
+        const outdated = new Set();
+        for (const t of themes) {
+          const version = t.builds[key].version;
+          if (installed.has(t.id) && version && (await installedVersion(t.id)) !== version) outdated.add(t.id);
+        }
         grid.textContent = '';
         msg.textContent = themes.length ? '' : 'No themes in the store for this device (' + key + ') yet.';
         for (const t of themes) {
@@ -1720,13 +1814,14 @@
           const button = document.createElement('button');
           button.className = 'btn';
           const have = installed.has(t.id);
-          button.textContent = have ? 'Reinstall' : 'Install';
+          const update = outdated.has(t.id);
+          button.textContent = update ? 'Update' : have ? 'Reinstall' : 'Install';
           button.addEventListener('click', () => installFromStore(t, button));
           card.append(img, title);
           if (have) {
             const tag = document.createElement('span');
             tag.className = 'tag';
-            tag.textContent = 'installed';
+            tag.textContent = update ? 'update available' : 'installed';
             card.append(tag);
           }
           card.append(desc, button);

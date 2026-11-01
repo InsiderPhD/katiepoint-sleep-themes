@@ -18,8 +18,9 @@
   .cap { font-size: 15px; letter-spacing: 1px; }
   .list div { font-size: 22px; line-height: 34px; }
   .list .k { margin-top: 18px; font-size: 18px; font-weight: 700; letter-spacing: 6px; line-height: 26px; }
-  .tags { display: flex; flex-wrap: wrap; gap: 8px 10px; margin-top: 8px; }
-  .tags div { font-size: 22px; line-height: 30px; padding: 2px 12px; border: 2px solid #fff; border-radius: 18px; }
+  /* One pill per line: data-fit sizes each pill to the real tag, up to the full width. */
+  .tags { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-top: 8px; }
+  .tags div { box-sizing: border-box; width: fit-content; max-width: 100%; font-size: 22px; line-height: 30px; padding: 2px 12px; border: 2px solid #fff; border-radius: 18px; }
 </style>
 </head>
 <body>
@@ -40,9 +41,9 @@
     <div class="k">YOUR SHELVES</div>
   </div>
   <div class="tags">
-    <div data-var="stats.top_tag_1" data-hide-if-empty>Fantasy</div>
-    <div data-var="stats.top_tag_2" data-hide-if-empty>Classics</div>
-    <div data-var="stats.top_tag_3" data-hide-if-empty>Short stories</div>
+    <div data-var="stats.top_tag_1" data-fit data-overflow="ellipsis" data-hide-if-empty>Fantasy</div>
+    <div data-var="stats.top_tag_2" data-fit data-overflow="ellipsis" data-hide-if-empty>Classics</div>
+    <div data-var="stats.top_tag_3" data-fit data-overflow="ellipsis" data-hide-if-empty>Short stories</div>
   </div>
 </div>
 </body>

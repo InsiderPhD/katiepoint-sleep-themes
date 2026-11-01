@@ -12,6 +12,7 @@
 // it the theme folder, and collects what its Compile button would install.
 import { mkdirSync, readFileSync, rmSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { createHash } from 'node:crypto';
 import { serve, launch } from './browser.mjs';
 import { listThemes, themeFiles } from './themes.mjs';
 
@@ -202,9 +203,14 @@ for (const t of themes) {
       continue;
     }
     mkdirSync(dir, { recursive: true });
-    const write = (name, data) => {
+    // The build's version is a hash of what the device downloads: its store
+    // client offers an update when it changes. Builds are deterministic, so
+    // an untouched theme keeps its version.
+    const hash = createHash('sha256');
+    const write = (name, data, versioned = true) => {
       const buf = Buffer.from(data, 'base64');
       writeFileSync(join(dir, name), buf);
+      if (versioned) hash.update(name).update(buf);
       return { name, size: buf.length };
     };
     // theme.bin last in the list: the store client writes it last, so a
@@ -214,13 +220,13 @@ for (const t of themes) {
     if (out.front) list.push(write('front.bmp', out.front));
     out.fonts.forEach((f, i) => list.push(write(`f${i}.cpfont`, f)));
     list.push(write('theme.bin', out.themeBin));
-    if (out.preview) write('preview.png', out.preview);
+    if (out.preview) write('preview.png', out.preview, false);
     if (t.overlay && !out.mask) {
       console.error(`FAIL ${key} ${t.id}: overlay theme compiled without a mask (is tools/compiler up to date?)`);
       failed++;
       continue;
     }
-    entry.builds[key] = { files: list };
+    entry.builds[key] = { version: hash.digest('hex').slice(0, 12), files: list };
     const kb = Math.round(list.reduce((n, f) => n + f.size, 0) / 1024);
     console.log(`ok   ${key} ${t.id} (${list.length} files, ${kb} KB)`);
   }
