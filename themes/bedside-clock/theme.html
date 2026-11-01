@@ -24,7 +24,7 @@
 <div class="page">
   <div class="top">
     <span data-template="{{time.zone}}" data-hide-if-empty>UTC+1</span>
-    <span data-template='{{device.charging ? icon("battery-charging") : icon("battery")}} {{device.battery}}%' data-hide-if-empty>82%</span>
+    <span style="width: 120px; text-align: right;" data-template='{{device.charging ? icon("battery-charging") : icon("battery")}} {{device.battery}}%' data-hide-if-empty>82%</span>
   </div>
   <div class="clock" data-glyphs="digits" data-template="{{time.now:HH:mm}}" data-hide-if-empty>22:41</div>
   <div class="date" data-template="{{time.now:dd.MM.yyyy}}" data-hide-if-empty>17.10.2026</div>
