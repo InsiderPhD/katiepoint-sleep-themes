@@ -24,6 +24,8 @@ for (const t of themes) {
     assets[path] = readFileSync(join('themes', t.id, path), 'utf8');
   }
   starters[t.id] = { name: t.id, assets, html: readFileSync(join('themes', t.id, 'theme.html'), 'utf8') };
+  // Sample plugin values for the preview (see PLUGIN_VAR in the bench).
+  if (t.samples) starters[t.id].samples = t.samples;
 }
 
 const esc = (s) => s.replace(/[<>&"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;' })[c]);

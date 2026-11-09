@@ -86,12 +86,17 @@ async function filesFor(id) {
 
 // ---- The compiler -----------------------------------------------------------
 let current = null; // the build being compiled: [width, height]
+// A theme's sample plugin values (theme.json "samples": {"plugin.<name>.<key>": "text"}),
+// served like a device with that plugin installed, so its store preview isn't
+// blank. Only plugin.* names: every other value comes from the bench, as on a device.
+let samples = [];
+const PLUGIN_VAR = /^plugin\.[A-Za-z0-9_]+\.[A-Za-z0-9_]+$/;
 const compilerServer = await serve('tools/compiler', {
   '/': (req, res) => res.writeHead(200, { 'content-type': 'text/html' }).end(readFileSync('tools/compiler/SleepThemesPage.html')),
   '/api/sleep-theme/vars': (req, res) => {
     const [panelWidth, panelHeight] = current;
     const body = { panelWidth, panelHeight, themesDir: '/sleep-themes', formatVersion: 1,
-      limits: { elements: 64, fonts: 4, strings: 4096 }, active: '', vars };
+      limits: { elements: 64, fonts: 4, strings: 4096 }, active: '', vars: vars.concat(samples) };
     res.writeHead(200, { 'content-type': 'application/json' }).end(JSON.stringify(body));
   },
   '/api/files': (req, res) => res.writeHead(200, { 'content-type': 'application/json' }).end('[]'),
@@ -107,7 +112,17 @@ const index = { version: 1, themes: [] };
 let failed = 0;
 for (const t of themes) {
   const entry = { id: t.id, name: t.name, description: t.description, orientation: t.orientation, overlay: t.overlay, builds: {} };
+  // A plugin the theme needs (theme.json "requires": {plugin, name, url}): the
+  // device and the web store say so, and where to get it.
+  if (t.requires) {
+    const { plugin, name, url } = t.requires;
+    if (!/^[a-z0-9][a-z0-9-]{0,30}$/.test(plugin || '')) throw new Error(`${t.id}: requires.plugin "${plugin}" is not a plugin folder name`);
+    entry.requires = { plugin, name: name || plugin, ...(url ? { url } : {}) };
+  }
   const files = await filesFor(t.id);
+  samples = Object.entries(t.samples || {})
+    .filter(([name]) => PLUGIN_VAR.test(name))
+    .map(([name, value]) => ({ name, kind: 'text', value: String(value) }));
   const payload = Object.fromEntries(Object.entries(files).map(([p, buf]) => [p, b64(buf)]));
   for (const [key, size] of Object.entries(BUILDS)) {
     current = size;

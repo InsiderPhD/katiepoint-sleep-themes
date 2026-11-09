@@ -17,6 +17,23 @@
    }
    ```
 
+   A theme that shows an SD plugin's values (`{{plugin.<name>.<key>}}`) also says which
+   plugin it needs and where to get it, and gives sample values for the store preview and
+   the bench (without them both show the theme empty):
+
+   ```json
+   "requires": {
+     "plugin": "word-of-the-day",
+     "name": "Word of the Day",
+     "url": "https://github.com/InsiderPhD/katiepoint-sleep-themes/tree/main/plugins/word-of-the-day"
+   },
+   "samples": { "plugin.word_of_the_day.word": "petrichor" }
+   ```
+
+   The device's Get More Themes preview and the web store show "Needs the Word of the Day
+   plugin" with the link, or what's still missing on that reader. Plugins only run on the
+   X4 Pro, X4C and Picco. Plugins kept in this repo live in `plugins/<id>/`.
+
 5. Run `npm install` and `npm run check` (the bench's checks at both screen sizes), then
    `npm run build` to see `dist/<size>/<id>/preview.png`.
 6. Open a pull request. The Action rebuilds `dist/` and the bench when it merges; don't

@@ -1,0 +1,16 @@
+{
+  "name": "Word of the day",
+  "description": "A new word every day with its meaning and an example.",
+  "order": 68,
+  "requires": {
+    "plugin": "word-of-the-day",
+    "name": "Word of the Day",
+    "url": "https://github.com/InsiderPhD/katiepoint-sleep-themes/tree/main/plugins/word-of-the-day"
+  },
+  "samples": {
+    "plugin.word_of_the_day.word": "petrichor",
+    "plugin.word_of_the_day.kind": "noun",
+    "plugin.word_of_the_day.definition": "the earthy smell that rises when rain falls on dry ground after a long warm spell",
+    "plugin.word_of_the_day.example": "After the storm the whole garden carried the sweet petrichor of wet stone."
+  }
+}

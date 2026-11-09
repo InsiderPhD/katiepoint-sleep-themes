@@ -166,6 +166,10 @@
             lower pad plural date</code>.</li>
           <li><code>icon("star")</code> in an expression draws <code>icons/star.svg</code> from the theme folder as part of
             the text: <code>{{stats.week_met_1 ? icon("star-filled") : icon("star")}}</code>.</li>
+          <li><code>data-var="plugin.word_of_day.word"</code> - text an SD plugin publishes (key <code>word</code>
+            of the <code>sleep-vars.json</code> in the plugin's folder; a <code>-</code> in the folder name is written
+            <code>_</code>). It's empty until the plugin is installed and has written the file, so pair it with
+            <code>data-hide-if-empty</code>.</li>
           <li><code>data-digit="0"</code> - only the nth digit from the right (flip-board tiles).</li>
           <li><code>data-var="book.cover"</code> on an <code>&lt;img&gt;</code> or <code>&lt;div&gt;</code> - the open
             book's cover. <code>object-fit: contain</code> shows all of it, <code>cover</code> zooms it to fill the box
@@ -217,6 +221,15 @@
       // ---- Device info ---------------------------------------------------
       let device = null;
       let varsByName = new Map();
+      // plugin.<name>.<key>: text an SD plugin publishes in its sleep-vars.json
+      // (SleepThemePluginVars.h). Any well-formed name compiles, even for a plugin
+      // this device doesn't have, so a theme can ship before its plugin is
+      // installed; it reads empty until then. Installed plugins' current values
+      // come from the device's list for the preview.
+      const PLUGIN_VAR = /^plugin\.[A-Za-z0-9_]+\.[A-Za-z0-9_]+$/;
+      function varInfo(name) {
+        return varsByName.get(name) || (PLUGIN_VAR.test(name) ? { name, kind: 'text', value: '' } : undefined);
+      }
       async function loadDevice() {
         const res = await fetch('/api/sleep-theme/vars');
         device = await res.json();
@@ -753,7 +766,7 @@
       let iconChars = new Map();
       const exprEnv = {
         lookup(name) {
-          const v = varsByName.get(name);
+          const v = varInfo(name);
           if (!v) throw new Error('unknown value ' + name);
           if (v.kind === 'number' || v.kind === 'timestamp') return v.raw === undefined ? ThemeExpr.EMPTY : ThemeExpr.num(v.raw);
           if (v.kind === 'text') return v.value ? ThemeExpr.str(v.value) : ThemeExpr.EMPTY;
@@ -763,7 +776,7 @@
         icon: (name) => (iconChars.has(name) ? String.fromCodePoint(iconChars.get(name).cp) : ''),
       };
       function expandSample(tpl) {
-        return ThemeExpr.expand(tpl, (name, fmt) => formatValue(varsByName.get(name), fmt), exprEnv).text;
+        return ThemeExpr.expand(tpl, (name, fmt) => formatValue(varInfo(name), fmt), exprEnv).text;
       }
       // The SVG file for icon("name"): icons/name.svg, or name.svg anywhere.
       function iconPath(name) {
@@ -814,10 +827,10 @@
           if (cs.display === 'inline') el.style.display = 'inline-block';
           applyVAlign(view, el);
           const tpl = templateOf(el);
-          const info = ThemeExpr.inspect(tpl, (n) => varsByName.has(n));
+          const info = ThemeExpr.inspect(tpl, (n) => varInfo(n) !== undefined);
           errors.push(...info.errors);
           const names = [...info.names];
-          const isCover = names.length === 1 && varsByName.get(names[0])?.kind === 'image';
+          const isCover = names.length === 1 && varInfo(names[0])?.kind === 'image';
           const isBar = el.getAttribute('data-kind') === 'bar';
           // An empty block has no height; a no-break space gives it its line box.
           if (!isCover && !isBar && el.textContent === '') el.textContent = '\u00a0';
@@ -1564,6 +1577,9 @@
           bmp: encodeBmp(bgBits, width, height),
           mask: maskBits && encodeBmp(maskBits, width, height),
           front: front && encodeBmp(front, width, height),
+          // What the device's Sleep Theme picker shows for this theme
+          // (SleepThemeRenderer::PREVIEW_FILE); store installs save one too.
+          preview: encodeBmp(previewBits, width, height),
           fontFiles,
         };
         if (overlay) log('Overlay: the page that was showing stays wherever the theme is transparent.');
@@ -1702,6 +1718,7 @@
           if (compiled.mask) await upload(dir, 'mask.bmp', compiled.mask);
           if (compiled.front) await upload(dir, 'front.bmp', compiled.front);
           for (const [i, f] of compiled.fontFiles.entries()) await upload(dir, 'f' + i + '.cpfont', f);
+          if (compiled.preview) await upload(dir, 'preview.bmp', compiled.preview);
           // Kept so the theme can be recompiled after a firmware update.
           await mkdir(dir, 'source');
           const made = new Set();
@@ -1761,6 +1778,31 @@
         }
       }
 
+      // The store's preview.png (a black-and-white screenshot from its CI) as
+      // the 1-bit BMP the device draws, or null when there is none.
+      async function storePreviewBmp(url) {
+        try {
+          const res = await fetch(url);
+          if (!res.ok) return null;
+          const img = await createImageBitmap(await res.blob());
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#fff';
+          ctx.fillRect(0, 0, img.width, img.height);
+          ctx.drawImage(img, 0, 0);
+          const px = ctx.getImageData(0, 0, img.width, img.height).data;
+          const black = new Uint8Array(img.width * img.height);
+          for (let i = 0; i < black.length; i++) {
+            black[i] = px[i * 4] * 299 + px[i * 4 + 1] * 587 + px[i * 4 + 2] * 114 < 128000 ? 1 : 0;
+          }
+          return encodeBmp(black, img.width, img.height);
+        } catch (e) {
+          return null;
+        }
+      }
+
       async function installFromStore(theme, button) {
         const key = storeBuildKey();
         const build = theme.builds[key];
@@ -1778,6 +1820,11 @@
           // Which build this is: the device's store screen and this page offer
           // an update when the store's version moves on.
           if (build.version) blobs.push(['store.ver', new Blob([build.version])]);
+          // The picture the device's Sleep Theme picker shows (SleepThemeRenderer::PREVIEW_FILE),
+          // as the device's own store install saves it. Optional: a theme without one still installs.
+          msg.textContent = 'Downloading ' + theme.name + ': preview...';
+          const preview = await storePreviewBmp(STORE_BASE + key + '/' + theme.id + '/preview.png');
+          if (preview) blobs.push(['preview.bmp', new Blob([preview])]);
           // A new theme becomes the sleep screen when the configured one isn't on
           // the card. Updates never switch it, and light and dark are built in.
           const onCard = await installedThemeNames();
@@ -1870,7 +1917,24 @@
             tag.textContent = update ? 'update available' : 'installed';
             card.append(tag);
           }
-          card.append(desc, button);
+          card.append(desc);
+          // A plugin the theme needs, and where to get it (the catalog's "requires").
+          if (t.requires && t.requires.plugin) {
+            const req = document.createElement('p');
+            req.className = 'muted';
+            req.style.margin = '0 0 8px';
+            req.append('Needs the ');
+            const name = document.createElement(t.requires.url ? 'a' : 'strong');
+            name.textContent = (t.requires.name || t.requires.plugin) + ' plugin';
+            if (t.requires.url && /^https?:\/\//.test(t.requires.url)) {
+              name.href = t.requires.url;
+              name.target = '_blank';
+              name.rel = 'noopener';
+            }
+            req.append(name, device.plugins === false ? ' (X4 Pro, X4C or Picco only).' : '.');
+            card.append(req);
+          }
+          card.append(button);
           grid.appendChild(card);
         }
       }

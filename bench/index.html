@@ -330,6 +330,7 @@
         <option value="library-card">Library card</option>
         <option value="gazette">The Nightly Gazette</option>
         <option value="spines">Spines (landscape)</option>
+        <option value="word-of-the-day">Word of the day</option>
         <option value="departures">Departures</option>
         <option value="finished-ticket">Finished-book ticket</option>
         <!-- @@STARTER-OPTIONS-END@@ -->
@@ -344,6 +345,7 @@
         <option value="x4">X4 · 800×480</option>
         <option value="x4pro">X4 Pro · 800×480</option>
         <option value="x4c">X4C · 800×480</option>
+        <option value="picco">Picco · 800×480</option>
         <option value="x3">X3 · 792×528</option>
       </select>
     </div>
@@ -502,6 +504,12 @@ VARS.push(['device.model', 't'], ['device.firmware', 't'], ['device.charging', '
 VARS.push(['recent.count', 'n']);
 for (let n = 1; n <= 10; n++) VARS.push([`recent.${n}.title`, 't'], [`recent.${n}.author`, 't'], [`recent.${n}.progress`, 'n'], [`recent.${n}.cover`, 'img']);
 const VAR_KIND = new Map(VARS);
+// plugin.<name>.<key>: text an SD plugin publishes (the device's SleepThemePluginVars).
+// Any well-formed name is valid, as on the device; the preview shows the
+// starter's sample values (theme.json "samples"), else nothing.
+const PLUGIN_VAR = /^plugin\.[A-Za-z0-9_]+\.[A-Za-z0-9_]+$/;
+let pluginSamples = {};
+const kindOf = (name) => VAR_KIND.get(name) || (PLUGIN_VAR.test(name) ? 't' : undefined);
 const VAR_RE = /\{\{\s*([a-z0-9_.]+)(?::([^}]*))?\s*\}\}/g;
 // ---- Template expressions -------------------------------------------
 // Mirrors src/sleeptheme/SleepThemeExpr.cpp: {{name}}, {{name:format}},
@@ -782,8 +790,8 @@ const LIVE_SEL = '[data-var],[data-template]';
 const MAX_ELEMENTS = 64, MAX_FONTS = 4, MAX_STRINGS = 4096;
 // Every reader, by its panel. The X4, X4 Pro and X4C share a screen size, so
 // they share one store build; the choice also names the device in device.model.
-const SCREENS = { x4: [800, 480], x4pro: [800, 480], x4c: [800, 480], x3: [792, 528] };
-const DEVICE_MODELS = { x4: 'X4', x4pro: 'X4 Pro', x4c: 'X4C', x3: 'X3' };
+const SCREENS = { x4: [800, 480], x4pro: [800, 480], x4c: [800, 480], picco: [800, 480], x3: [792, 528] };
+const DEVICE_MODELS = { x4: 'X4', x4pro: 'X4 Pro', x4c: 'X4C', picco: 'Picco', x3: 'X3' };
 
 // ---------------------------------------------------------------------------
 // Sample readers. Overrides from the Values tab are layered on top.
@@ -976,6 +984,17 @@ const STARTERS = {
     "name": "spines",
     "assets": {},
     "html": "<!DOCTYPE html>\n<html data-kp-orientation=\"landscape\" data-kp-dither=\"threshold\">\n<head>\n<meta charset=\"UTF-8\">\n<style>\n  @font-face { font-family: Inter; font-weight: 400; src: url(Inter-Regular.ttf); }\n  @font-face { font-family: Inter; font-weight: 700; src: url(Inter-Bold.ttf); }\n  html, body { margin: 0; height: 100%; }\n  body { background: #fff; color: #000; font-family: Inter, sans-serif; }\n  .page { box-sizing: border-box; height: 100%; padding: 40px 44px 34px; display: flex; gap: 36px; }\n  .left { width: 230px; display: flex; flex-direction: column; }\n  .kicker { font-size: 16px; font-weight: 700; letter-spacing: 5px; }\n  .now { margin-top: 12px; font-size: 30px; font-weight: 700; line-height: 36px; }\n  .pct { margin-top: auto; font-size: 90px; font-weight: 700; line-height: 1; letter-spacing: -3px; }\n  .read { font-size: 16px; }\n  .shelf { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; }\n  .books { display: flex; align-items: flex-end; gap: 6px; padding: 0 10px; }\n  .spine { position: relative; box-sizing: border-box; border: 3px solid #000; border-radius: 3px 3px 0 0; background: #fff; }\n  .spine.dark { background: #000; color: #fff; }\n  .spine::before, .spine::after { content: \"\"; position: absolute; left: 6px; right: 6px; height: 3px; background: currentColor; }\n  .spine::before { top: 14px; }\n  .spine::after { bottom: 14px; }\n  /* Rotated titles: the device draws live text through any 2D transform. */\n  .t {\n    position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-90deg);\n    text-align: center; white-space: nowrap; font-size: 16px; font-weight: 700; line-height: 20px;\n  }\n  .plank { height: 14px; background: #000; border-radius: 2px; }\n  .count { margin-top: 10px; text-align: right; font-size: 16px; }\n<\/style>\n<\/head>\n<body>\n<div class=\"page\">\n  <div class=\"left\">\n    <div class=\"kicker\">ON THE SHELF<\/div>\n    <div class=\"now\" data-var=\"book.title\" data-max-lines=\"3\" data-overflow=\"ellipsis\" data-hide-if-empty>The War of the Worlds<\/div>\n    <div class=\"pct\" data-glyphs=\"digits\" data-template=\"{{book.progress}}%\" data-hide-if-empty>62%<\/div>\n    <div class=\"read\">read so far<\/div>\n  <\/div>\n  <div class=\"shelf\">\n    <div class=\"books\">\n      <div class=\"spine dark\" style=\"height: 300px; width: 64px;\"><div class=\"t\" style=\"width: 272px;\" data-var=\"recent.2.title\" data-overflow=\"ellipsis\" data-hide-if-empty>Dracula<\/div><\/div>\n      <div class=\"spine\" style=\"height: 270px; width: 52px;\"><div class=\"t\" style=\"width: 242px;\" data-var=\"recent.3.title\" data-overflow=\"ellipsis\" data-hide-if-empty>The Fellowship of the Ring<\/div><\/div>\n      <div class=\"spine dark\" style=\"height: 320px; width: 58px;\"><div class=\"t\" style=\"width: 292px;\" data-var=\"recent.4.title\" data-overflow=\"ellipsis\" data-hide-if-empty>The Tell-Tale Heart and Other Stories<\/div><\/div>\n      <div class=\"spine\" style=\"height: 250px; width: 48px;\"><div class=\"t\" style=\"width: 222px;\" data-var=\"recent.5.title\" data-overflow=\"ellipsis\" data-hide-if-empty>The Time Machine<\/div><\/div>\n      <div class=\"spine\" style=\"height: 290px; width: 60px;\"><div class=\"t\" style=\"width: 262px;\" data-var=\"recent.6.title\" data-overflow=\"ellipsis\" data-hide-if-empty>The Two Towers<\/div><\/div>\n      <div class=\"spine dark\" style=\"height: 310px; width: 54px;\"><div class=\"t\" style=\"width: 282px;\" data-var=\"recent.7.title\" data-overflow=\"ellipsis\" data-hide-if-empty>Frankenstein<\/div><\/div>\n    <\/div>\n    <div class=\"plank\"><\/div>\n    <div class=\"count\" data-template='{{recent.count}} {{plural(recent.count, \"book\", \"books\")}} on the go' data-hide-if-empty>7 books on the go<\/div>\n  <\/div>\n<\/div>\n<\/body>\n<\/html>\n"
+  },
+  "word-of-the-day": {
+    "name": "word-of-the-day",
+    "assets": {},
+    "html": "<!DOCTYPE html>\n<html data-kp-orientation=\"portrait\" data-kp-dither=\"threshold\">\n<head>\n<meta charset=\"UTF-8\">\n<!--\n  Word of the day. The words come from the Word of the Day SD plugin\n  (plugins/word-of-the-day in this repo): its sleep-vars-daily.jsonl holds a\n  year of words and the device picks today's line itself, offline. X4 Pro,\n  X4C and Picco only (the boards with SD plugins), with Enable Plugins on.\n  Without the plugin every word value is empty and the page says how to get it.\n\n  Live fonts: Inter Bold 50 (word), Inter Regular 26 (definition),\n  Inter Regular 19 (everything small). Three of the four allowed.\n-->\n<style>\n  @font-face { font-family: Inter; font-weight: 400; src: url(Inter-Regular.ttf); }\n  @font-face { font-family: Inter; font-weight: 700; src: url(Inter-Bold.ttf); }\n  html, body { margin: 0; height: 100%; }\n  body { background: #fff; color: #000; font-family: Inter, sans-serif; }\n  .page { position: absolute; left: 30px; right: 30px; top: 40px; bottom: 40px; display: flex; flex-direction: column; }\n  .mast { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 10px; border-bottom: 3px solid #000; }\n  .mast b { font-size: 19px; letter-spacing: 4px; }\n  .small { font-size: 19px; font-weight: 400; }\n  .word { margin-top: 44px; font-size: 50px; font-weight: 700; line-height: 60px; }\n  .kind { margin-top: 6px; font-size: 19px; letter-spacing: 3px; }\n  .rule { margin-top: 26px; width: 64px; border-top: 3px solid #000; }\n  .definition { margin-top: 22px; font-size: 26px; line-height: 36px; }\n  .example { margin-top: 30px; padding-left: 16px; border-left: 3px solid #000; font-size: 19px; line-height: 27px; }\n  .hint { margin-top: 44px; font-size: 19px; line-height: 27px; }\n  .foot { margin-top: auto; padding-top: 10px; border-top: 1px solid #000; display: flex; justify-content: space-between; }\n  .foot span { max-width: 300px; }\n<\/style>\n<\/head>\n<body>\n<div class=\"page\">\n  <div class=\"mast\">\n    <b>WORD OF THE DAY<\/b>\n    <span class=\"small\" data-template=\"{{time.now:dd.MM.yyyy}}\" data-hide-if-empty>17.10.2026<\/span>\n  <\/div>\n\n  <div class=\"word\" data-var=\"plugin.word_of_the_day.word\" data-overflow=\"ellipsis\" data-hide-if-empty>petrichor<\/div>\n  <div class=\"kind small\" data-template=\"{{upper(plugin.word_of_the_day.kind)}}\" data-hide-if-empty>NOUN<\/div>\n  <div class=\"rule\"><\/div>\n  <div class=\"definition\" data-var=\"plugin.word_of_the_day.definition\" data-max-lines=\"4\" data-overflow=\"ellipsis\"\n       data-hide-if-empty>the earthy smell that rises when rain falls on dry ground after a long warm spell<\/div>\n  <div class=\"example small\" data-var=\"plugin.word_of_the_day.example\" data-max-lines=\"3\" data-overflow=\"ellipsis\"\n       data-hide-if-empty>After the storm the whole garden carried the sweet petrichor of wet stone.<\/div>\n  <!-- Empty (nothing drawn) once the plugin publishes a word. No hide-if-empty:\n       that would hide it exactly when the word is missing. -->\n  <div class=\"hint small\" data-template=\"{{plugin.word_of_the_day.word ? &quot;&quot; : &quot;Add the Word of the Day plugin and turn on Enable Plugins.&quot;}}\"\n       data-max-lines=\"3\">Add the Word of the Day plugin and turn on Enable Plugins.<\/div>\n\n  <div class=\"foot small\">\n    <span data-template=\"Reading {{book.title}}\" data-overflow=\"ellipsis\" data-hide-if-empty>Reading The War of the Worlds<\/span>\n    <span data-template=\"{{device.battery}}%\" data-hide-if-empty>82%<\/span>\n  <\/div>\n<\/div>\n<\/body>\n<\/html>\n",
+    "samples": {
+      "plugin.word_of_the_day.word": "petrichor",
+      "plugin.word_of_the_day.kind": "noun",
+      "plugin.word_of_the_day.definition": "the earthy smell that rises when rain falls on dry ground after a long warm spell",
+      "plugin.word_of_the_day.example": "After the storm the whole garden carried the sweet petrichor of wet stone."
+    }
   },
   "departures": {
     "name": "departures",
@@ -1524,6 +1543,7 @@ function ensureIconFont(key) {
 // ---------------------------------------------------------------------------
 // Values: mirrors formatValue() in SleepThemesPage.html and SleepThemeVars.cpp.
 function rawOf(name) {
+  if (PLUGIN_VAR.test(name)) return has(pluginSamples, name) ? pluginSamples[name] : '';
   const o = state.overrides[state.scenario];
   if (o && has(o, name)) return o[name];
   if (name === 'time.now') return Math.floor(Date.now() / 1000);
@@ -1543,7 +1563,7 @@ function formatDate(epoch, fmt) {
 // "dd-mm-yyyy": mm (minutes) where a month was surely meant.
 const monthLikeMinutes = (fmt) => /(^|[^:])mm/.test(fmt) && !/[Hh]/.test(fmt);
 function formatValue(name, fmt) {
-  const kind = VAR_KIND.get(name), raw = rawOf(name);
+  const kind = kindOf(name), raw = rawOf(name);
   if (kind === undefined || raw === null || raw === undefined || raw === '' || kind === 'img') return '';
   if (kind === 'n') return fmt && /^0+$/.test(fmt) ? String(raw).padStart(fmt.length, '0') : String(raw);
   if (kind === 'ts') return formatDate(raw, fmt || (name === 'time.now' ? 'HH:mm' : 'yyyy-MM-dd'));
@@ -1555,7 +1575,7 @@ const previewIconCp = new Map();
 const iconCpFor = (name) => { if (!previewIconCp.has(name)) previewIconCp.set(name, 0xe000 + previewIconCp.size); return previewIconCp.get(name); };
 const benchEnv = {
   lookup(name) {
-    const kind = VAR_KIND.get(name);
+    const kind = kindOf(name);
     if (kind === undefined) throw new Error('unknown value ' + name);
     const raw = rawOf(name);
     if (raw === null || raw === undefined || raw === '' || kind === 'img') return ThemeExpr.EMPTY;
@@ -3278,7 +3298,7 @@ function runChecks(d) {
     const tpl = templateOf(el);
     const lbl = `<code>${esc(label(el))}</code>`;
     bytes += new TextEncoder().encode(tpl).length + 1;
-    const info = ThemeExpr.inspect(tpl, (n) => VAR_KIND.has(n));
+    const info = ThemeExpr.inspect(tpl, (n) => kindOf(n) !== undefined);
     const names = [...info.names];
     if (!names.length && !info.icons.size) add('warn', `${lbl} has no <code>{{value}}</code> in it.`, idx);
     for (const e of info.errors) add('error', e.startsWith('{{') ? `<code>${esc(e.slice(0, e.indexOf('}}:') + 2))}</code>${esc(e.slice(e.indexOf('}}:') + 2))}` : esc(e), idx);
@@ -3585,6 +3605,7 @@ $('loadStarter').addEventListener('click', () => {
   toast(`Loaded ${$('starter').selectedOptions[0].textContent}. ⌘Z goes back.`);
 });
 function loadStarter(s) {
+  pluginSamples = s.samples || {};
   for (const [path, text] of Object.entries(s.assets)) addAsset(path, new Blob([text], { type: guessType(path) }));
   for (const name of Object.keys(BUNDLED_FONTS)) if (s.html.includes(name) && !findAsset(name)) addAsset(name, bundledBlob(name));
   // Icon fonts are generated here rather than shipped with the theme.

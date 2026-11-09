@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html data-kp-orientation="portrait" data-kp-dither="threshold">
+<head>
+<meta charset="UTF-8">
+<!--
+  Word of the day. The words come from the Word of the Day SD plugin
+  (plugins/word-of-the-day in this repo): its sleep-vars-daily.jsonl holds a
+  year of words and the device picks today's line itself, offline. X4 Pro,
+  X4C and Picco only (the boards with SD plugins), with Enable Plugins on.
+  Without the plugin every word value is empty and the page says how to get it.
+
+  Live fonts: Inter Bold 50 (word), Inter Regular 26 (definition),
+  Inter Regular 19 (everything small). Three of the four allowed.
+-->
+<style>
+  @font-face { font-family: Inter; font-weight: 400; src: url(Inter-Regular.ttf); }
+  @font-face { font-family: Inter; font-weight: 700; src: url(Inter-Bold.ttf); }
+  html, body { margin: 0; height: 100%; }
+  body { background: #fff; color: #000; font-family: Inter, sans-serif; }
+  .page { position: absolute; left: 30px; right: 30px; top: 40px; bottom: 40px; display: flex; flex-direction: column; }
+  .mast { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 10px; border-bottom: 3px solid #000; }
+  .mast b { font-size: 19px; letter-spacing: 4px; }
+  .small { font-size: 19px; font-weight: 400; }
+  .word { margin-top: 44px; font-size: 50px; font-weight: 700; line-height: 60px; }
+  .kind { margin-top: 6px; font-size: 19px; letter-spacing: 3px; }
+  .rule { margin-top: 26px; width: 64px; border-top: 3px solid #000; }
+  .definition { margin-top: 22px; font-size: 26px; line-height: 36px; }
+  .example { margin-top: 30px; padding-left: 16px; border-left: 3px solid #000; font-size: 19px; line-height: 27px; }
+  .hint { margin-top: 44px; font-size: 19px; line-height: 27px; }
+  .foot { margin-top: auto; padding-top: 10px; border-top: 1px solid #000; display: flex; justify-content: space-between; }
+  .foot span { max-width: 300px; }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="mast">
+    <b>WORD OF THE DAY</b>
+    <span class="small" data-template="{{time.now:dd.MM.yyyy}}" data-hide-if-empty>17.10.2026</span>
+  </div>
+
+  <div class="word" data-var="plugin.word_of_the_day.word" data-overflow="ellipsis" data-hide-if-empty>petrichor</div>
+  <div class="kind small" data-template="{{upper(plugin.word_of_the_day.kind)}}" data-hide-if-empty>NOUN</div>
+  <div class="rule"></div>
+  <div class="definition" data-var="plugin.word_of_the_day.definition" data-max-lines="4" data-overflow="ellipsis"
+       data-hide-if-empty>the earthy smell that rises when rain falls on dry ground after a long warm spell</div>
+  <div class="example small" data-var="plugin.word_of_the_day.example" data-max-lines="3" data-overflow="ellipsis"
+       data-hide-if-empty>After the storm the whole garden carried the sweet petrichor of wet stone.</div>
+  <!-- Empty (nothing drawn) once the plugin publishes a word. No hide-if-empty:
+       that would hide it exactly when the word is missing. -->
+  <div class="hint small" data-template="{{plugin.word_of_the_day.word ? &quot;&quot; : &quot;Add the Word of the Day plugin and turn on Enable Plugins.&quot;}}"
+       data-max-lines="3">Add the Word of the Day plugin and turn on Enable Plugins.</div>
+
+  <div class="foot small">
+    <span data-template="Reading {{book.title}}" data-overflow="ellipsis" data-hide-if-empty>Reading The War of the Worlds</span>
+    <span data-template="{{device.battery}}%" data-hide-if-empty>82%</span>
+  </div>
+</div>
+</body>
+</html>

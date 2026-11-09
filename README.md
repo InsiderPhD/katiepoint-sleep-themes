@@ -1,6 +1,6 @@
 # KatiePoint sleep themes
 
-Sleep screens for KatiePoint on the Xteink X4, X4 Pro, X4C and X3. Each one is an HTML/CSS
+Sleep screens for KatiePoint on the Xteink X4, X4 Pro, X4C and X3, and the BOOX Picco. Each one is an HTML/CSS
 page: the static parts are baked into a black-and-white picture, and the live parts (your
 reading stats, the book you're on, the time, your covers) are filled in by the reader every
 time it goes to sleep.
@@ -21,7 +21,7 @@ Both download the build for your reader's screen from `dist/` here.
 
 <!-- gallery:start -->
 
-Rendered at 480×800 (X4, X4 Pro and X4C, which share a screen) with sample values; tap an
+Rendered at 480×800 (X4, X4 Pro, X4C and Picco, which share a screen) with sample values; tap an
 image for full size, or **X3** for the 528×792 build. Overlay themes are shown on a stand-in
 book page: on the reader they sit on whatever page you were reading.
 
@@ -149,6 +149,32 @@ book page: on the reader they sit on whatever page you were reading.
 
 <!-- gallery:end -->
 
+## Plugins
+
+Some themes show values an SD plugin publishes. The store says when a theme needs one,
+and where to get it. Plugins run on the X4 Pro, X4C and Picco only.
+
+### Word of the Day
+
+A new word every day for the **Word of the day** theme: the word, its part of speech, a
+short definition and an example sentence. It holds a year of words
+([`plugins/word-of-the-day/sleep-vars-daily.jsonl`](plugins/word-of-the-day/sleep-vars-daily.jsonl)),
+and the reader picks today's by the date, offline: no WiFi, no account, nothing running in
+the background.
+
+1. Download **`word-of-the-day-plugin.zip`** from the
+   [latest release](https://github.com/InsiderPhD/katiepoint-sleep-themes/releases/latest).
+2. Install it: on the reader's web page open **Plugins** → **Install a plugin** and choose
+   the zip, or unzip it so the files sit in `/plugins/word-of-the-day/` on the SD card.
+3. On the reader, turn on **Settings → System → Enable Plugins**.
+4. Pick the **Word of the day** sleep theme (Settings → sleep theme picker → get more
+   themes).
+
+Needs firmware with daily plugin values (newer than 2.0.0-rc3). On older firmware the theme
+shows the same fallback word every day. While the reader doesn't know the date it shows
+that fallback too. Make your own list by editing the `.jsonl`: one JSON object per line,
+with `word`, `kind`, `definition` and `example`.
+
 ## Make a theme
 
 1. Open the [bench](https://insiderphd.github.io/katiepoint-sleep-themes/bench/), pick a
@@ -156,6 +182,10 @@ book page: on the reader they sit on whatever page you were reading.
    reader's limits as you go.
 2. **Save .zip**, then on the reader's **Sleep Themes** web page choose the zip, Compile,
    and Install.
+
+A folder copied straight from `themes/` has no fonts in it (the build adds Inter from
+`fonts/`), so the web page can't compile it as is. Load it in the bench and **Save .zip**,
+or add `fonts/Inter-Regular.ttf` and `fonts/Inter-Bold.ttf` to the folder first.
 
 The format reference (every attribute, value, expression and limit) is
 [docs/sleep-themes/README.md](https://github.com/InsiderPhD/crosspoint-reader/blob/master/docs/sleep-themes/README.md)
@@ -166,6 +196,7 @@ in the firmware repo. To add yours to the store, see [CONTRIBUTING.md](CONTRIBUT
 ```
 themes/<id>/theme.html   the theme (plus theme.json: name, description, order; and any SVGs)
 fonts/                   Inter, added to any theme that uses it
+plugins/<id>/            SD plugins that themes here use (see Plugins above)
 tools/compiler/          the firmware's compiler page, run headless
 tools/compile.mjs        compiles every theme for every screen into dist/
 tools/build-bench.mjs    writes every theme into the bench's Start from list

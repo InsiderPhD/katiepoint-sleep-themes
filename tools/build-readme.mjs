@@ -6,7 +6,7 @@ import { listThemes } from './themes.mjs';
 
 const START = '<!-- gallery:start -->';
 const END = '<!-- gallery:end -->';
-const BUILD = '800x480'; // X4 / X4 Pro / X4C; the X3 previews sit beside them
+const BUILD = '800x480'; // X4 / X4 Pro / X4C / Picco; the X3 previews sit beside them
 const X3 = '792x528';
 const PER_ROW = { portrait: 4, landscape: 2 };
 const WIDTH = { portrait: 180, landscape: 380 };
@@ -40,7 +40,7 @@ const themes = listThemes();
 const gallery = [
   START,
   '',
-  `Rendered at 480×800 (X4, X4 Pro and X4C, which share a screen) with sample values; tap an`,
+  `Rendered at 480×800 (X4, X4 Pro, X4C and Picco, which share a screen) with sample values; tap an`,
   `image for full size, or **X3** for the 528×792 build. Overlay themes are shown on a stand-in`,
   `book page: on the reader they sit on whatever page you were reading.`,
   '',
