@@ -106,10 +106,17 @@ book page: on the reader they sit on whatever page you were reading.
 <sub>Tonight's reading as a newspaper front page, with a headline written from your stats.</sub>
 </td>
 <td align="center" valign="top" width="25%">
+<a href="dist/800x480/word-of-the-day/preview.png"><img src="dist/800x480/word-of-the-day/preview.png" width="180" alt="Word of the day"></a><br>
+<b>Word of the day</b><br><code>word-of-the-day</code> · <a href="dist/792x528/word-of-the-day/preview.png">X3</a><br>
+<sub>A new word every day with its meaning and an example.</sub>
+</td>
+<td align="center" valign="top" width="25%">
 <a href="dist/800x480/departures/preview.png"><img src="dist/800x480/departures/preview.png" width="180" alt="Departures"></a><br>
 <b>Departures</b><br><code>departures</code> · <a href="dist/792x528/departures/preview.png">X3</a><br>
 <sub>A split-flap board of your hours read, streak and minutes this week, with the book that's next.</sub>
 </td>
+</tr>
+<tr>
 <td align="center" valign="top" width="25%">
 <a href="dist/800x480/finished-ticket/preview.png"><img src="dist/800x480/finished-ticket/preview.png" width="180" alt="Finished-book ticket"></a><br>
 <b>Finished-book ticket</b><br><code>finished-ticket</code> · <a href="dist/792x528/finished-ticket/preview.png">X3</a><br>

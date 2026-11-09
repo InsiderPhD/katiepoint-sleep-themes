@@ -912,6 +912,70 @@
       }
     },
     {
+      "id": "word-of-the-day",
+      "name": "Word of the day",
+      "description": "A new word every day with its meaning and an example.",
+      "orientation": "portrait",
+      "overlay": false,
+      "builds": {
+        "800x480": {
+          "version": "824ef4c1eb9c",
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 48062
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 18638
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 93265
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 28628
+            },
+            {
+              "name": "theme.bin",
+              "size": 727
+            }
+          ]
+        },
+        "792x528": {
+          "version": "66a6749beea7",
+          "files": [
+            {
+              "name": "bg.bmp",
+              "size": 53918
+            },
+            {
+              "name": "f0.cpfont",
+              "size": 18638
+            },
+            {
+              "name": "f1.cpfont",
+              "size": 93265
+            },
+            {
+              "name": "f2.cpfont",
+              "size": 28628
+            },
+            {
+              "name": "theme.bin",
+              "size": 727
+            }
+          ]
+        }
+      },
+      "requires": {
+        "plugin": "word-of-the-day",
+        "name": "Word of the Day",
+        "url": "https://github.com/InsiderPhD/katiepoint-sleep-themes/tree/main/plugins/word-of-the-day"
+      }
+    },
+    {
       "id": "departures",
       "name": "Departures",
       "description": "A split-flap board of your hours read, streak and minutes this week, with the book that's next.",
